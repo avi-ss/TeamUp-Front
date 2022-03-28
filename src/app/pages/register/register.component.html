@@ -1,0 +1,163 @@
+<div class="container">
+  <form (ngSubmit)="onSubmit()">
+    <!--STEP 0-->
+    <div *ngIf="step == 0" class="form-control">
+      <h1>Welcome Onboard, Gamer!</h1>
+      <p>Let's help you find your perfect team</p>
+      <input
+        type="text"
+        name="nickname"
+        [(ngModel)]="nickname"
+        id="nickname"
+        placeholder="Enter your nickname"
+      />
+      <input
+        type="email"
+        name="email"
+        [(ngModel)]="email"
+        id="email"
+        placeholder="Enter your email"
+      />
+      <input
+        type="password"
+        name="password"
+        [(ngModel)]="password"
+        id="password"
+        placeholder="Enter your password"
+      />
+      <input
+        type="password"
+        name="confirmPassword"
+        [(ngModel)]="confirmPassword"
+        id="confirmPassword"
+        placeholder="Confirm your password"
+      />
+      <app-button text="Register" (btnClick)="nextStep()"></app-button>
+    </div>
+
+    <!--STEP 1-->
+    <div *ngIf="step == 1" class="form-control">
+      <h1>What is your name</h1>
+      <p>Setting your profile ({{ step }}/{{ maxSteps }})</p>
+      <input
+        type="text"
+        name="fullname"
+        [(ngModel)]="fullname"
+        id="fullname"
+        placeholder="Enter your full name"
+      />
+      <app-button text="Continue" (btnClick)="nextStep()"></app-button>
+    </div>
+
+    <!--STEP 2-->
+    <div *ngIf="step == 2" class="form-control">
+      <h1>What is your birthday</h1>
+      <p>Setting your profile ({{ step }}/{{ maxSteps }})</p>
+      <input type="date" name="birthday" [(ngModel)]="birthday" id="birthday" />
+      <app-button text="Continue" (btnClick)="nextStep()"></app-button>
+    </div>
+
+    <!--STEP 3-->
+    <div *ngIf="step == 3" class="form-control">
+      <h1>Select your gender</h1>
+      <p>Setting your profile ({{ step }}/{{ maxSteps }})</p>
+
+      <input
+        type="radio"
+        class="btn-check"
+        name="gender"
+        [(ngModel)]="gender"
+        value="masc"
+        id="masc"
+      />
+      <label class="btn btn-outline-primary" for="masc">Masculine</label>
+
+      <input
+        type="radio"
+        class="btn-check"
+        name="gender"
+        [(ngModel)]="gender"
+        value="fem"
+        id="fem"
+      />
+      <label class="btn btn-outline-primary" for="fem">Feminine</label>
+
+      <input
+        type="radio"
+        class="btn-check"
+        name="gender"
+        [(ngModel)]="gender"
+        value="other"
+        id="other"
+      />
+      <label class="btn btn-outline-primary" for="other">Other</label>
+
+      <app-button text="Continue" (btnClick)="nextStep()"></app-button>
+    </div>
+
+    <!--STEP 4-->
+    <div *ngIf="step == 4" class="form-control">
+      <h1>Select your favourite game</h1>
+      <p>Setting your profile ({{ step }}/{{ maxSteps }})</p>
+
+      <div *ngFor="let g of games; index as i">
+        <input
+          type="radio"
+          class="btn-check"
+          name="game"
+          [(ngModel)]="gameIndex"
+          value="{{ i }}"
+          id="{{ g.id }}"
+        />
+        <label class="btn btn-outline-primary" for="{{ g.id }}">{{
+          g.name
+        }}</label>
+      </div>
+
+      <app-button text="Continue" (btnClick)="nextStep()"></app-button>
+    </div>
+
+    <!--STEP 5-->
+    <div *ngIf="step == 5" class="form-control">
+      <h1>What is your role in {{ games[gameIndex].name }}</h1>
+      <p>Setting your profile ({{ step }}/{{ maxSteps }})</p>
+
+      <div *ngFor="let r of games[gameIndex].roles">
+        <input
+          type="radio"
+          class="btn-check"
+          name="role"
+          [(ngModel)]="role"
+          value="{{ r.name }}"
+          id="{{ r.id }}"
+        />
+        <label class="btn btn-outline-primary" for="{{ r.id }}">{{
+          r.name
+        }}</label>
+      </div>
+      <app-button text="Continue" (btnClick)="nextStep()"></app-button>
+    </div>
+
+    <!--STEP 6-->
+    <div *ngIf="step == 6" class="form-control">
+      <h1>Select your current rank in {{ games[gameIndex].name }}</h1>
+      <p>Setting your profile ({{ step }}/{{ maxSteps }})</p>
+
+      <div *ngFor="let r of games[gameIndex].ranks">
+        <input
+          type="radio"
+          class="btn-check"
+          name="role"
+          [(ngModel)]="role"
+          value="{{ r.name }}"
+          id="{{ r.id }}"
+        />
+        <label class="btn btn-outline-primary" for="{{ r.id }}">{{
+          r.name
+        }}</label>
+      </div>
+      <app-button type="submit" text="Continue"></app-button>
+    </div>
+  </form>
+  <span>Already have an account? <a routerLink="/login">Sign in</a></span>
+</div>

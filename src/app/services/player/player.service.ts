@@ -27,6 +27,16 @@ export class PlayerService {
     return this.httpClient.get<Player>(url);
   }
 
+  getPlayerByNickname(nickname: string): Observable<Player> {
+    const url = `${this.apiUrl}/${nickname}`;
+    return this.httpClient.get<Player>(url);
+  }
+
+  getPlayerByEmail(email: string): Observable<Player> {
+    const url = `${this.apiUrl}/${email}`;
+    return this.httpClient.get<Player>(url);
+  }
+
   modifyPlayer(id: string, player: Player): Observable<Player> {
     const url = `${this.apiUrl}/${id}`;
     return this.httpClient.put<Player>(url, player, httpOptions);

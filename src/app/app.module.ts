@@ -23,6 +23,8 @@ import { ButtonComponent } from './components/button/button.component';
 import { LoginComponent } from './pages/login/login.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { HeaderComponent } from './components/header/header.component';
+import { MainComponent } from './pages/main/main.component';
 
 const appRoutes: Routes = [
   {
@@ -37,6 +39,10 @@ const appRoutes: Routes = [
     path: 'register',
     component: RegisterComponent,
   },
+  {
+    path: 'main/player/:id',
+    component: MainComponent,
+  },
 ];
 
 @NgModule({
@@ -48,6 +54,7 @@ const appRoutes: Routes = [
     LoginComponent,
     LoginFormComponent,
     RegisterComponent,
+    HeaderComponent,
   ],
   imports: [
     BrowserModule,

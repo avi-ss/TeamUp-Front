@@ -6,6 +6,7 @@ import { Game } from 'src/app/models/Game';
 import { GameService } from 'src/app/services/game/game.service';
 import { PlayerService } from 'src/app/services/player/player.service';
 import { Gender } from 'src/app/models/Gender';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -16,7 +17,7 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup[] = [];
 
   hide: boolean = true;
-  step: number = 3;
+  step: number = 0;
   maxSteps: number = 6;
   games: Game[] = [];
   genders: Gender[] = [
@@ -27,10 +28,13 @@ export class RegisterComponent implements OnInit {
   maxDate: Date = new Date();
   gameIndex: number = 0;
 
+  nicknameErrorMessage: string = '';
+
   constructor(
     private gameService: GameService,
     private playerService: PlayerService,
-    private builder: FormBuilder
+    private builder: FormBuilder,
+    private router: Router
   ) {
     const currentDate = new Date();
     currentDate.setFullYear(currentDate.getFullYear() - 16);
@@ -130,6 +134,10 @@ export class RegisterComponent implements OnInit {
   }
 
   nextStep(): void {
+    if (this.step == 0 && this.getNicknameDuplicateErrorMessage()) {
+      return;
+    }
+
     if (this.step < this.maxSteps) {
       this.step += 1;
     }
@@ -159,6 +167,7 @@ export class RegisterComponent implements OnInit {
 
     this.playerService.addPlayer(player).subscribe((result) => {
       console.log(result);
+      this.router.navigateByUrl('/main/player/' + `${result}`);
     });
   }
 
@@ -217,13 +226,55 @@ export class RegisterComponent implements OnInit {
     return this.registerForm[6].get('rank');
   }
 
+  getNicknameErrorMessage() {
+    if (this.registerForm != null) {
+      if (this.nickname?.hasError('required')) {
+        this.nicknameErrorMessage = 'You must enter a nickname';
+        return true;
+      } else if (
+        this.nickname?.hasError('minlength') ||
+        this.nickname?.hasError('maxlength')
+      ) {
+        this.nicknameErrorMessage =
+          'Nickname must have between 5 and 16 characters';
+        return true;
+      }
+    }
+    this.nicknameErrorMessage = '';
+    return false;
+  }
+
+  getNicknameDuplicateErrorMessage() {
+    this.playerService
+      .getPlayerByNickname(this.nickname?.value)
+      .subscribe((player) => {
+        console.log(player);
+        if (player != null) {
+          this.nicknameErrorMessage = 'Nickname is already in use';
+          return true;
+        }
+        this.nicknameErrorMessage = '';
+        return false;
+      });
+    return false;
+  }
+
   getEmailErrorMessage() {
     if (this.registerForm != null) {
       if (this.email?.hasError('required')) {
         return 'You must enter an email';
+      } else if (this.email?.hasError('email')) {
+        return 'Not a valid email';
+      } else {
+        /*this.playerService
+          .getPlayerByEmail(this.email?.value)
+          .subscribe((player) => {
+            if (player != null) {
+              return 'Email is already in use';
+            }
+            return '';
+          });*/
       }
-
-      return this.email?.hasError('email') ? 'Not a valid email' : '';
     }
     return '';
   }

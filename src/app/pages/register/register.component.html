@@ -13,8 +13,8 @@
             formControlName="nickname"
             required
           />
-          <mat-error *ngIf="nickname?.invalid">
-            Nombre de usuario inválido
+          <mat-error *ngIf="getNicknameErrorMessage()">
+            {{ nicknameErrorMessage }}
           </mat-error>
         </mat-form-field>
       </div>
@@ -72,6 +72,8 @@
 
     <!--STEP 1-->
     <div *ngIf="step == 1" class="form-control">
+      <h1>What is your name</h1>
+      <p>Setting your profile ({{ step }}/{{ maxSteps }})</p>
       <div>
         <mat-form-field [formGroup]="registerForm[1]" appearance="fill">
           <mat-label>Enter your full name</mat-label>

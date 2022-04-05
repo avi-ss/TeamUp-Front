@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, firstValueFrom } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Player } from 'src/app/models/Player';
@@ -27,14 +27,15 @@ export class PlayerService {
     return this.httpClient.get<Player>(url);
   }
 
-  getPlayerByNickname(nickname: string): Observable<Player> {
-    const url = `${this.apiUrl}/${nickname}`;
-    return this.httpClient.get<Player>(url);
+  checkPlayerWithNickname(nickname: string): Observable<boolean> {
+    const url = `${this.apiUrl}/checkNickname/${nickname}`;
+    console.log(url);
+    return this.httpClient.get<boolean>(url);
   }
 
-  getPlayerByEmail(email: string): Observable<Player> {
-    const url = `${this.apiUrl}/${email}`;
-    return this.httpClient.get<Player>(url);
+  checkPlayerWithEmail(email: string): Observable<boolean> {
+    const url = `${this.apiUrl}/checkEmail/${email}`;
+    return this.httpClient.get<boolean>(url);
   }
 
   modifyPlayer(id: string, player: Player): Observable<Player> {

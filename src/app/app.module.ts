@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HammerModule } from '@angular/platform-browser';
 
 // Material modules
 import { MatButtonModule } from '@angular/material/button';
@@ -14,17 +15,23 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatSelectModule } from '@angular/material/select';
+import { MatCardModule } from '@angular/material/card';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatStepperModule } from '@angular/material/stepper';
 
 // Components
 import { AppComponent } from './app.component';
 import { GamesComponent } from './components/games/games.component';
-import { SplashComponent } from './pages/splash/splash.component';
 import { ButtonComponent } from './components/button/button.component';
-import { LoginComponent } from './pages/login/login.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
+import { CardComponent } from './components/card/card.component';
+
+// Pages
+import { SplashComponent } from './pages/splash/splash.component';
+import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
-import { HeaderComponent } from './components/header/header.component';
 import { MainComponent } from './pages/main/main.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 
 const appRoutes: Routes = [
   {
@@ -54,7 +61,9 @@ const appRoutes: Routes = [
     LoginComponent,
     LoginFormComponent,
     RegisterComponent,
-    HeaderComponent,
+    CardComponent,
+    MainComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,
@@ -70,6 +79,10 @@ const appRoutes: Routes = [
     MatDatepickerModule,
     MatMomentDateModule,
     MatSelectModule,
+    MatCardModule,
+    MatTabsModule,
+    MatStepperModule,
+    HammerModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

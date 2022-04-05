@@ -1,233 +1,260 @@
 <div class="container">
-  <form (ngSubmit)="onRegister()">
-    <!--STEP 0-->
-    <div *ngIf="step == 0" [formGroup]="registerForm[0]" class="form-control">
-      <h1>Welcome Onboard, Gamer!</h1>
-      <p>Let's help you find your perfect team</p>
-      <div>
-        <mat-form-field appearance="fill">
-          <mat-label>Enter your nickname</mat-label>
-          <input
-            matInput
-            placeholder="Nickname"
-            formControlName="nickname"
-            required
-          />
-          <mat-error *ngIf="getNicknameErrorMessage()">
-            {{ nicknameErrorMessage }}
-          </mat-error>
-        </mat-form-field>
-      </div>
-      <div>
-        <mat-form-field appearance="fill">
-          <mat-label>Enter your email</mat-label>
-          <input
-            matInput
-            placeholder="user@example.com"
-            formControlName="email"
-            required
-          />
-          <mat-error *ngIf="email?.invalid">
-            {{ getEmailErrorMessage() }}
-          </mat-error>
-        </mat-form-field>
-      </div>
-      <div>
-        <mat-form-field appearance="fill">
-          <mat-label>Enter your password</mat-label>
-          <input
-            matInput
-            [type]="hide ? 'password' : 'text'"
-            formControlName="password"
-            required
-          />
-          <button mat-icon-button matSuffix (click)="hide = !hide">
-            <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
-          </button>
-          <mat-error *ngIf="password?.invalid">
-            {{ getPasswordErrorMessage() }}
-          </mat-error>
-        </mat-form-field>
-      </div>
-      <div>
-        <mat-form-field appearance="fill">
-          <mat-label>Confirm your password</mat-label>
-          <input
-            matInput
-            [type]="hide ? 'password' : 'text'"
-            formControlName="confirmPassword"
-            required
-          />
-          <mat-error *ngIf="confirmPassword?.invalid">
-            {{ getConfirmPasswordErrorMessage() }}
-          </mat-error>
-        </mat-form-field>
-      </div>
-      <app-button
-        [disabled]="registerForm[0].invalid"
-        text="Register"
-        (btnClick)="nextStep()"
-      ></app-button>
-    </div>
-
-    <!--STEP 1-->
-    <div *ngIf="step == 1" class="form-control">
-      <h1>What is your name</h1>
-      <p>Setting your profile ({{ step }}/{{ maxSteps }})</p>
-      <div>
-        <mat-form-field [formGroup]="registerForm[1]" appearance="fill">
-          <mat-label>Enter your full name</mat-label>
-          <input
-            matInput
-            placeholder="Full name"
-            formControlName="fullname"
-            required
-          />
-          <mat-error *ngIf="fullname?.invalid"> Nombre inválido </mat-error>
-        </mat-form-field>
-      </div>
-      <app-button
-        [disabled]="registerForm[1].invalid"
-        text="Continue"
-        (btnClick)="nextStep()"
-      ></app-button>
-    </div>
-
-    <!--STEP 2-->
-    <div *ngIf="step == 2" class="form-control">
-      <h1>What is your birthday</h1>
-      <p>Setting your profile ({{ step }}/{{ maxSteps }})</p>
-      <div>
-        <mat-form-field
-          [formGroup]="registerForm[2]"
-          class="example-full-width"
-          appearance="fill"
+  <mat-stepper orientation="vertical" [linear]="true" #stepper>
+    <form (ngSubmit)="onRegister()">
+      <!--STEP 0-->
+      <mat-step [stepControl]="registerForm[0]">
+        <ng-template matStepLabel
+          >Fill your basic account information</ng-template
         >
-          <mat-label>Select your birthday</mat-label>
-          <input
-            matInput
-            [max]="maxDate"
-            [matDatepicker]="picker"
-            formControlName="birthday"
-          />
-          <mat-datepicker-toggle
-            matSuffix
-            [for]="picker"
-          ></mat-datepicker-toggle>
-          <mat-datepicker touchUi #picker></mat-datepicker>
-          <mat-error> You must have at least 16 years old </mat-error>
-        </mat-form-field>
-      </div>
-      <app-button
-        [disabled]="registerForm[2].invalid"
-        text="Continue"
-        (btnClick)="nextStep()"
-      ></app-button>
-    </div>
+        <h1>Welcome Onboard, Gamer!</h1>
+        <p>Let's help you find your perfect team</p>
 
-    <!--STEP 3-->
-    <div *ngIf="step == 3" class="form-control">
-      <h1>Select your gender</h1>
-      <p>Setting your profile ({{ step }}/{{ maxSteps }})</p>
+        <form [formGroup]="registerForm[0]">
+          <div>
+            <mat-form-field appearance="fill">
+              <mat-label>Enter your nickname</mat-label>
+              <input
+                matInput
+                placeholder="Nickname"
+                formControlName="nickname"
+                required
+                maxlength="16"
+              />
+              <mat-error *ngIf="getNicknameErrorMessage()">
+                {{ nicknameErrorMessage }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field appearance="fill">
+              <mat-label>Enter your email</mat-label>
+              <input
+                matInput
+                placeholder="user@example.com"
+                formControlName="email"
+                required
+              />
+              <mat-error *ngIf="getEmailErrorMessage()">
+                {{ emailErrorMessage }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field appearance="fill">
+              <mat-label>Enter your password</mat-label>
+              <input
+                matInput
+                [type]="hide ? 'password' : 'text'"
+                formControlName="password"
+                required
+              />
+              <button mat-icon-button matSuffix (click)="hide = !hide">
+                <mat-icon>{{
+                  hide ? "visibility_off" : "visibility"
+                }}</mat-icon>
+              </button>
+              <mat-error *ngIf="password?.invalid">
+                {{ getPasswordErrorMessage() }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field appearance="fill">
+              <mat-label>Confirm your password</mat-label>
+              <input
+                matInput
+                [type]="hide ? 'password' : 'text'"
+                formControlName="confirmPassword"
+                required
+              />
+              <mat-error *ngIf="confirmPassword?.invalid">
+                {{ getConfirmPasswordErrorMessage() }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </form>
+        <button mat-raised-button color="primary" matStepperNext>
+          Register
+        </button>
+      </mat-step>
 
-      <div>
-        <mat-form-field [formGroup]="registerForm[3]" appearance="fill">
-          <mat-label>Gender</mat-label>
-          <mat-select formControlName="gender" required>
-            <mat-option>--</mat-option>
-            <mat-option *ngFor="let g of genders" [value]="g.value">
-              {{ g.name }}
-            </mat-option>
-          </mat-select>
-          <mat-error> Please choose a gender </mat-error>
-        </mat-form-field>
-      </div>
+      <!--STEP 1-->
+      <mat-step [stepControl]="registerForm[1]">
+        <ng-template matStepLabel>Fill out your name</ng-template>
+        <h1>What is your name</h1>
 
-      <app-button
-        [disabled]="registerForm[3].invalid"
-        text="Continue"
-        (btnClick)="nextStep()"
-      ></app-button>
-    </div>
+        <form [formGroup]="registerForm[1]">
+          <mat-form-field appearance="fill">
+            <mat-label>Enter your full name</mat-label>
+            <input
+              matInput
+              placeholder="Full name"
+              formControlName="fullname"
+              required
+            />
+            <mat-error *ngIf="fullname?.invalid">
+              El nombre solo debe contener letras
+            </mat-error>
+          </mat-form-field>
+        </form>
+        <div>
+          <button mat-raised-button color="primary" matStepperPrevious>
+            Back
+          </button>
+          <button mat-raised-button color="primary" matStepperNext>
+            Continue
+          </button>
+        </div>
+      </mat-step>
 
-    <!--STEP 4-->
-    <div *ngIf="step == 4" class="form-control">
-      <h1>Select your favourite game</h1>
-      <p>Setting your profile ({{ step }}/{{ maxSteps }})</p>
+      <!--STEP 2-->
+      <mat-step [stepControl]="registerForm[2]">
+        <ng-template matStepLabel>Fill out your birthday</ng-template>
+        <h1>What is your birthday</h1>
 
-      <div>
-        <mat-form-field [formGroup]="registerForm[4]" appearance="fill">
-          <mat-label>Favourite game</mat-label>
-          <mat-select formControlName="game" required>
-            <mat-option>--</mat-option>
-            <mat-option *ngFor="let g of games; let i = index" [value]="i">
-              {{ g.name }}
-            </mat-option>
-          </mat-select>
-          <mat-error> You must select a game </mat-error>
-        </mat-form-field>
-      </div>
+        <form [formGroup]="registerForm[2]">
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Select your birthday</mat-label>
+            <input
+              matInput
+              [max]="maxDate"
+              [matDatepicker]="picker"
+              formControlName="birthday"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker touchUi #picker></mat-datepicker>
+            <mat-error> You must have at least 16 years old </mat-error>
+          </mat-form-field>
+        </form>
 
-      <app-button
-        [disabled]="registerForm[4].invalid"
-        text="Continue"
-        (btnClick)="nextStep()"
-      ></app-button>
-    </div>
+        <div>
+          <button mat-raised-button color="primary" matStepperPrevious>
+            Back
+          </button>
+          <button mat-raised-button color="primary" matStepperNext>
+            Continue
+          </button>
+        </div>
+      </mat-step>
 
-    <!--STEP 5-->
-    <div *ngIf="step == 5" class="form-control">
-      <h1>What is your role in {{ games[game?.value].name }}</h1>
-      <p>Setting your profile ({{ step }}/{{ maxSteps }})</p>
+      <!--STEP 3-->
+      <mat-step [stepControl]="registerForm[3]">
+        <ng-template matStepLabel>Fill out your gender</ng-template>
+        <h1>Select your gender</h1>
 
-      <div>
-        <mat-form-field [formGroup]="registerForm[5]" appearance="fill">
-          <mat-label>Role</mat-label>
-          <mat-select formControlName="role" required>
-            <mat-option>--</mat-option>
-            <mat-option
-              *ngFor="let r of games[game?.value].roles"
-              [value]="r.name"
-              >{{ r.name }}
-            </mat-option>
-          </mat-select>
-          <mat-error> You must select a role </mat-error>
-        </mat-form-field>
-      </div>
+        <form [formGroup]="registerForm[3]">
+          <mat-form-field appearance="fill">
+            <mat-label>Gender</mat-label>
+            <mat-select formControlName="gender" required>
+              <mat-option>--</mat-option>
+              <mat-option *ngFor="let g of genders" [value]="g.value">
+                {{ g.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error> Please choose a gender </mat-error>
+          </mat-form-field>
+        </form>
 
-      <app-button
-        [disabled]="registerForm[5].invalid"
-        text="Continue"
-        (btnClick)="nextStep()"
-      ></app-button>
-    </div>
+        <div>
+          <button mat-raised-button color="primary" matStepperPrevious>
+            Back
+          </button>
+          <button mat-raised-button color="primary" matStepperNext>
+            Continue
+          </button>
+        </div>
+      </mat-step>
 
-    <!--STEP 6-->
-    <div *ngIf="step == 6" class="form-control">
-      <h1>Select your current rank in {{ games[game?.value].name }}</h1>
-      <p>Setting your profile ({{ step }}/{{ maxSteps }})</p>
+      <!--STEP 4-->
+      <mat-step [stepControl]="registerForm[4]">
+        <ng-template matStepLabel>Fill out your game preferences</ng-template>
+        <h1>Select your favourite game</h1>
 
-      <div>
-        <mat-form-field [formGroup]="registerForm[6]" appearance="fill">
-          <mat-label>Rank</mat-label>
-          <mat-select formControlName="rank" required>
-            <mat-option>--</mat-option>
-            <mat-option
-              *ngFor="let r of games[game?.value].ranks"
-              [value]="r.name"
-              >{{ r.name }}
-            </mat-option>
-          </mat-select>
-          <mat-error> You must select a rank </mat-error>
-        </mat-form-field>
-      </div>
+        <form [formGroup]="registerForm[4]">
+          <mat-form-field appearance="fill">
+            <mat-label>Favourite game</mat-label>
+            <mat-select formControlName="game" required>
+              <mat-option>--</mat-option>
+              <mat-option *ngFor="let g of games; let i = index" [value]="i">
+                {{ g.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error> You must select a game </mat-error>
+          </mat-form-field>
+        </form>
 
-      <app-button
-        [disabled]="registerForm[6].invalid"
-        type="submit"
-        text="Complete"
-      ></app-button>
-    </div>
-  </form>
+        <div>
+          <button mat-raised-button color="primary" matStepperPrevious>
+            Back
+          </button>
+          <button mat-raised-button color="primary" matStepperNext>
+            Continue
+          </button>
+        </div>
+      </mat-step>
+
+      <!--STEP 5
+      <mat-step [stepControl]="registerForm[5]">
+        <ng-template matStepLabel>Fill out your role</ng-template>
+        <div *ngIf="loaded">
+          <h1>What is your role in {{ gameName }}</h1>
+
+          <form [formGroup]="registerForm[5]">
+            <mat-form-field appearance="fill">
+              <mat-label>Role</mat-label>
+              <mat-select formControlName="role" required>
+                <mat-option>--</mat-option>
+                <mat-option *ngFor="let r of roles" [value]="r.name">
+                  {{ r.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error> You must select a role </mat-error>
+            </mat-form-field>
+          </form>
+        </div>
+        <div>
+          <button mat-raised-button color="primary" matStepperPrevious>
+            Back
+          </button>
+          <button mat-raised-button color="primary" matStepperNext>
+            Continue
+          </button>
+        </div>
+      </mat-step>-->
+
+      <!--STEP 6
+      <mat-step [stepControl]="registerForm[6]">
+        <ng-template matStepLabel>Fill out your rank</ng-template>
+        <div *ngIf="loaded">
+          <h1>Select your current rank in {{ gameName }}</h1>
+          <form [formGroup]="registerForm[6]">
+            <mat-form-field appearance="fill">
+              <mat-label>Rank</mat-label>
+              <mat-select formControlName="rank" required>
+                <mat-option>--</mat-option>
+                <mat-option *ngFor="let r of ranks" [value]="r.name"
+                  >{{ r.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error> You must select a rank </mat-error>
+            </mat-form-field>
+          </form>
+        </div>
+        <div>
+          <button mat-raised-button color="primary" matStepperPrevious>
+            Back
+          </button>
+          <app-button
+            [disabled]="registerForm[6].invalid"
+            type="submit"
+            text="Complete"
+          ></app-button>
+        </div>
+      </mat-step>-->
+    </form>
+  </mat-stepper>
   <span>Already have an account? <a routerLink="/login">Sign in</a></span>
 </div>

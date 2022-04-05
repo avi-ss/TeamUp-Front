@@ -1,5 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AsyncValidatorFn,
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl,
+  ValidationErrors,
+} from '@angular/forms';
 import { Player } from 'src/app/models/Player';
 import { Preferences } from 'src/app/models/Preferences';
 import { Game } from 'src/app/models/Game';
@@ -7,6 +14,7 @@ import { GameService } from 'src/app/services/game/game.service';
 import { PlayerService } from 'src/app/services/player/player.service';
 import { Gender } from 'src/app/models/Gender';
 import { Router } from '@angular/router';
+import { Observable, map } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -17,7 +25,7 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup[] = [];
 
   hide: boolean = true;
-  step: number = 0;
+  loaded: boolean = false;
   maxSteps: number = 6;
   games: Game[] = [];
   genders: Gender[] = [
@@ -29,6 +37,7 @@ export class RegisterComponent implements OnInit {
   gameIndex: number = 0;
 
   nicknameErrorMessage: string = '';
+  emailErrorMessage: string = '';
 
   constructor(
     private gameService: GameService,
@@ -47,6 +56,7 @@ export class RegisterComponent implements OnInit {
     this.gameService.getGames().subscribe((games) => {
       this.games = games;
       console.log(games);
+      this.loaded = true;
     });
   }
 
@@ -63,9 +73,13 @@ export class RegisterComponent implements OnInit {
               Validators.required,
               Validators.minLength(5),
               Validators.maxLength(16),
+              this.nicknameValidator(),
             ],
           ],
-          email: ['', [Validators.required, Validators.email]],
+          email: [
+            '',
+            [Validators.required, Validators.email, this.emailValidator()],
+          ],
           password: [
             '',
             [
@@ -92,6 +106,7 @@ export class RegisterComponent implements OnInit {
             Validators.required,
             Validators.minLength(8),
             Validators.maxLength(25),
+            Validators.pattern('^[A-Z][a-z]*(\\s[A-Z][a-z]*)?'),
           ],
         ],
       })
@@ -131,16 +146,6 @@ export class RegisterComponent implements OnInit {
         rank: ['', [Validators.required]],
       })
     );
-  }
-
-  nextStep(): void {
-    if (this.step == 0 && this.getNicknameDuplicateErrorMessage()) {
-      return;
-    }
-
-    if (this.step < this.maxSteps) {
-      this.step += 1;
-    }
   }
 
   onRegister() {
@@ -218,12 +223,24 @@ export class RegisterComponent implements OnInit {
     return this.registerForm[4].get('game');
   }
 
+  get gameName() {
+    return this.games[Number(this.game)].name;
+  }
+
   get role() {
     return this.registerForm[5].get('role');
   }
 
+  get roles() {
+    return this.games[Number(this.game)].roles;
+  }
+
   get rank() {
     return this.registerForm[6].get('rank');
+  }
+
+  get ranks() {
+    return this.games[Number(this.game)].ranks;
   }
 
   getNicknameErrorMessage() {
@@ -231,12 +248,14 @@ export class RegisterComponent implements OnInit {
       if (this.nickname?.hasError('required')) {
         this.nicknameErrorMessage = 'You must enter a nickname';
         return true;
-      } else if (
-        this.nickname?.hasError('minlength') ||
-        this.nickname?.hasError('maxlength')
-      ) {
-        this.nicknameErrorMessage =
-          'Nickname must have between 5 and 16 characters';
+      } else if (this.nickname?.hasError('minlength')) {
+        this.nicknameErrorMessage = 'Minimum of 5 characters';
+        return true;
+      } else if (this.nickname?.hasError('maxlenght')) {
+        this.nicknameErrorMessage = 'Maximum of 16 characters';
+        return true;
+      } else if (this.nickname?.hasError('used')) {
+        this.nicknameErrorMessage = 'Nickname already in use';
         return true;
       }
     }
@@ -244,19 +263,11 @@ export class RegisterComponent implements OnInit {
     return false;
   }
 
-  getNicknameDuplicateErrorMessage() {
-    this.playerService
-      .getPlayerByNickname(this.nickname?.value)
-      .subscribe((player) => {
-        console.log(player);
-        if (player != null) {
-          this.nicknameErrorMessage = 'Nickname is already in use';
-          return true;
-        }
-        this.nicknameErrorMessage = '';
-        return false;
-      });
-    return false;
+  private nicknameValidator(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> =>
+      this.playerService
+        .checkPlayerWithNickname(control.value)
+        .pipe(map((response) => (response ? { used: true } : null)));
   }
 
   getEmailErrorMessage() {
@@ -265,18 +276,18 @@ export class RegisterComponent implements OnInit {
         return 'You must enter an email';
       } else if (this.email?.hasError('email')) {
         return 'Not a valid email';
-      } else {
-        /*this.playerService
-          .getPlayerByEmail(this.email?.value)
-          .subscribe((player) => {
-            if (player != null) {
-              return 'Email is already in use';
-            }
-            return '';
-          });*/
+      } else if (this.email?.hasError('used')) {
+        return 'Email already in use';
       }
     }
     return '';
+  }
+
+  private emailValidator(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> =>
+      this.playerService
+        .checkPlayerWithEmail(control.value)
+        .pipe(map((response) => (response ? { used: true } : null)));
   }
 
   getPasswordErrorMessage() {

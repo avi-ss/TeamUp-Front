@@ -196,10 +196,10 @@
         </div>
       </mat-step>
 
-      <!--STEP 5
+      <!--STEP 5-->
       <mat-step [stepControl]="registerForm[5]">
         <ng-template matStepLabel>Fill out your role</ng-template>
-        <div *ngIf="loaded">
+        <ng-template matStepContent>
           <h1>What is your role in {{ gameName }}</h1>
 
           <form [formGroup]="registerForm[5]">
@@ -214,7 +214,7 @@
               <mat-error> You must select a role </mat-error>
             </mat-form-field>
           </form>
-        </div>
+        </ng-template>
         <div>
           <button mat-raised-button color="primary" matStepperPrevious>
             Back
@@ -223,12 +223,12 @@
             Continue
           </button>
         </div>
-      </mat-step>-->
+      </mat-step>
 
-      <!--STEP 6
+      <!--STEP 6-->
       <mat-step [stepControl]="registerForm[6]">
         <ng-template matStepLabel>Fill out your rank</ng-template>
-        <div *ngIf="loaded">
+        <ng-template matStepContent>
           <h1>Select your current rank in {{ gameName }}</h1>
           <form [formGroup]="registerForm[6]">
             <mat-form-field appearance="fill">
@@ -242,7 +242,7 @@
               <mat-error> You must select a rank </mat-error>
             </mat-form-field>
           </form>
-        </div>
+        </ng-template>
         <div>
           <button mat-raised-button color="primary" matStepperPrevious>
             Back
@@ -253,7 +253,7 @@
             text="Complete"
           ></app-button>
         </div>
-      </mat-step>-->
+      </mat-step>
     </form>
   </mat-stepper>
   <span>Already have an account? <a routerLink="/login">Sign in</a></span>

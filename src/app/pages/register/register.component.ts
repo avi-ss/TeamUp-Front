@@ -73,12 +73,13 @@ export class RegisterComponent implements OnInit {
               Validators.required,
               Validators.minLength(5),
               Validators.maxLength(16),
-              this.nicknameValidator(),
             ],
+            [this.nicknameValidator()],
           ],
           email: [
             '',
-            [Validators.required, Validators.email, this.emailValidator()],
+            [Validators.required, Validators.email],
+            [this.emailValidator()],
           ],
           password: [
             '',
@@ -254,7 +255,7 @@ export class RegisterComponent implements OnInit {
       } else if (this.nickname?.hasError('maxlenght')) {
         this.nicknameErrorMessage = 'Maximum of 16 characters';
         return true;
-      } else if (this.nickname?.hasError('used')) {
+      } else if (this.nickname?.hasError('nicknameUsed')) {
         this.nicknameErrorMessage = 'Nickname already in use';
         return true;
       }
@@ -267,27 +268,35 @@ export class RegisterComponent implements OnInit {
     return (control: AbstractControl): Observable<ValidationErrors | null> =>
       this.playerService
         .checkPlayerWithNickname(control.value)
-        .pipe(map((response) => (response ? { used: true } : null)));
+        .pipe(
+          map((response: boolean) => (response ? { nicknameUsed: true } : null))
+        );
   }
 
   getEmailErrorMessage() {
     if (this.registerForm != null) {
       if (this.email?.hasError('required')) {
-        return 'You must enter an email';
+        this.emailErrorMessage = 'You must enter an email';
+        return true;
       } else if (this.email?.hasError('email')) {
-        return 'Not a valid email';
-      } else if (this.email?.hasError('used')) {
-        return 'Email already in use';
+        this.emailErrorMessage = 'Not a valid email';
+        return true;
+      } else if (this.email?.hasError('emailUsed')) {
+        this.emailErrorMessage = 'Email already in use';
+        return true;
       }
     }
-    return '';
+    this.emailErrorMessage = '';
+    return false;
   }
 
   private emailValidator(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> =>
       this.playerService
         .checkPlayerWithEmail(control.value)
-        .pipe(map((response) => (response ? { used: true } : null)));
+        .pipe(
+          map((response: boolean) => (response ? { emailUsed: true } : null))
+        );
   }
 
   getPasswordErrorMessage() {

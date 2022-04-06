@@ -33,7 +33,5 @@ export class ProfileComponent implements OnInit {
     this.playerService.getPlayerById(id).subscribe((player) => {
       this.player = player;
     });
-
-    console.log(this.player);
   }
 }

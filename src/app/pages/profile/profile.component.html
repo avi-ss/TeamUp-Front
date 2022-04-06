@@ -1,1 +1,15 @@
-<p>profile works!</p>
+<h1>Profile of {{ player.nickname }}</h1>
+<h3>{{ player.fullname }}</h3>
+<ul>
+  <li>Email: {{ player.email }}</li>
+  <li>Birthday: {{ player.birthday }}</li>
+  <li>Gender: {{ player.gender }}</li>
+  <li>
+    Preferences:
+    <ul>
+      <li>Game: {{ player.preferences.game }}</li>
+      <li>Rank: {{ player.preferences.rank }}</li>
+      <li>Role: {{ player.preferences.role }}</li>
+    </ul>
+  </li>
+</ul>

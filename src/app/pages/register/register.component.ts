@@ -225,7 +225,7 @@ export class RegisterComponent implements OnInit {
   }
 
   get gameName() {
-    return this.games[Number(this.game)].name;
+    return this.games[Number(this.registerForm[4].get('game')?.value)].name;
   }
 
   get role() {
@@ -233,7 +233,7 @@ export class RegisterComponent implements OnInit {
   }
 
   get roles() {
-    return this.games[Number(this.game)].roles;
+    return this.games[Number(this.registerForm[4].get('game')?.value)].roles;
   }
 
   get rank() {
@@ -241,7 +241,7 @@ export class RegisterComponent implements OnInit {
   }
 
   get ranks() {
-    return this.games[Number(this.game)].ranks;
+    return this.games[Number(this.registerForm[4].get('game')?.value)].ranks;
   }
 
   getNicknameErrorMessage() {

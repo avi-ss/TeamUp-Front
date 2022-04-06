@@ -1,6 +1,5 @@
 <div class="container">
   <mat-stepper orientation="vertical" [linear]="true" #stepper>
-    <form (ngSubmit)="onRegister()">
       <!--STEP 0-->
       <mat-step [stepControl]="registerForm[0]">
         <ng-template matStepLabel
@@ -201,7 +200,7 @@
         <ng-template matStepLabel>Fill out your role</ng-template>
         <ng-template matStepContent>
           <h1>What is your role in {{ gameName }}</h1>
-
+        
           <form [formGroup]="registerForm[5]">
             <mat-form-field appearance="fill">
               <mat-label>Role</mat-label>
@@ -214,15 +213,15 @@
               <mat-error> You must select a role </mat-error>
             </mat-form-field>
           </form>
+          <div>
+            <button mat-raised-button color="primary" matStepperPrevious>
+              Back
+            </button>
+            <button mat-raised-button color="primary" matStepperNext>
+              Continue
+            </button>
+          </div>
         </ng-template>
-        <div>
-          <button mat-raised-button color="primary" matStepperPrevious>
-            Back
-          </button>
-          <button mat-raised-button color="primary" matStepperNext>
-            Continue
-          </button>
-        </div>
       </mat-step>
 
       <!--STEP 6-->
@@ -230,7 +229,7 @@
         <ng-template matStepLabel>Fill out your rank</ng-template>
         <ng-template matStepContent>
           <h1>Select your current rank in {{ gameName }}</h1>
-          <form [formGroup]="registerForm[6]">
+          <form [formGroup]="registerForm[6]" (ngSubmit)="onRegister()">
             <mat-form-field appearance="fill">
               <mat-label>Rank</mat-label>
               <mat-select formControlName="rank" required>
@@ -241,20 +240,19 @@
               </mat-select>
               <mat-error> You must select a rank </mat-error>
             </mat-form-field>
+            <div>
+              <button mat-raised-button color="primary" matStepperPrevious>
+                Back
+              </button>
+              <app-button
+                [disabled]="registerForm[6].invalid"
+                type="submit"
+                text="Complete"
+              ></app-button>
+            </div>
           </form>
         </ng-template>
-        <div>
-          <button mat-raised-button color="primary" matStepperPrevious>
-            Back
-          </button>
-          <app-button
-            [disabled]="registerForm[6].invalid"
-            type="submit"
-            text="Complete"
-          ></app-button>
-        </div>
       </mat-step>
-    </form>
   </mat-stepper>
   <span>Already have an account? <a routerLink="/login">Sign in</a></span>
 </div>

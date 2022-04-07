@@ -1,26 +1,30 @@
-<mat-tab-group>
+<mat-tab-group [backgroundColor]="background" headerPosition="below">
   <mat-tab>
     <ng-template mat-tab-label>
       <mat-icon>account_circle</mat-icon>
     </ng-template>
-    <app-profile></app-profile>
+    <ng-template matTabContent>
+      <app-profile></app-profile>
+    </ng-template>
   </mat-tab>
   <mat-tab>
     <ng-template mat-tab-label>
       <mat-icon>dashboard</mat-icon>
     </ng-template>
-    <app-card></app-card>
+    <ng-template matTabContent>
+      <app-card></app-card>
+    </ng-template>
   </mat-tab>
   <mat-tab>
     <ng-template mat-tab-label>
       <mat-icon>calendar_today</mat-icon>
     </ng-template>
-    Content 3
+    <ng-template matTabContent> Tournaments </ng-template>
   </mat-tab>
   <mat-tab>
     <ng-template mat-tab-label>
       <mat-icon>question_answer</mat-icon>
     </ng-template>
-    Content 3
+    <ng-template matTabContent> Messages </ng-template>
   </mat-tab>
 </mat-tab-group>

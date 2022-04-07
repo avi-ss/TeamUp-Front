@@ -18,6 +18,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatStepperModule } from '@angular/material/stepper';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 // Components
 import { AppComponent } from './app.component';
@@ -32,6 +33,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { MainComponent } from './pages/main/main.component';
 import { ProfileComponent } from './pages/profile/profile.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 const appRoutes: Routes = [
   {
@@ -64,6 +66,7 @@ const appRoutes: Routes = [
     CardComponent,
     MainComponent,
     ProfileComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,
@@ -78,6 +81,7 @@ const appRoutes: Routes = [
     MatIconModule,
     MatDatepickerModule,
     MatMomentDateModule,
+    MatExpansionModule,
     MatSelectModule,
     MatCardModule,
     MatTabsModule,

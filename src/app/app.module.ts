@@ -19,6 +19,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatDialogModule } from '@angular/material/dialog';
 
 // Components
 import { AppComponent } from './app.component';
@@ -26,6 +27,9 @@ import { GamesComponent } from './components/games/games.component';
 import { ButtonComponent } from './components/button/button.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { CardComponent } from './components/card/card.component';
+import { BasicFormComponent } from './components/basic-form/basic-form.component';
+import { AccountFormComponent } from './components/account-form/account-form.component';
+import { BasicFormDialogComponent } from './components/basic-form-dialog/basic-form-dialog.component';
 
 // Pages
 import { SplashComponent } from './pages/splash/splash.component';
@@ -34,6 +38,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { MainComponent } from './pages/main/main.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { PreferencesFormComponent } from './components/preferences-form/preferences-form.component';
 
 const appRoutes: Routes = [
   {
@@ -67,6 +72,10 @@ const appRoutes: Routes = [
     MainComponent,
     ProfileComponent,
     FooterComponent,
+    BasicFormComponent,
+    AccountFormComponent,
+    BasicFormDialogComponent,
+    PreferencesFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -83,6 +92,7 @@ const appRoutes: Routes = [
     MatMomentDateModule,
     MatExpansionModule,
     MatSelectModule,
+    MatDialogModule,
     MatCardModule,
     MatTabsModule,
     MatStepperModule,

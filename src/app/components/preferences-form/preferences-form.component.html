@@ -1,0 +1,63 @@
+<form [formGroup]="form">
+  <mat-stepper orientation="vertical">
+    <mat-step>
+      <ng-template matStepLabel>Select your favourite game</ng-template>
+      <ng-template matStepContent>
+        <mat-form-field appearance="fill">
+          <mat-label>Favourite game</mat-label>
+          <mat-select formControlName="game" required>
+            <mat-option>--</mat-option>
+            <mat-option *ngFor="let g of games" [value]="g.name">
+              {{ g.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error> You must select a game </mat-error>
+        </mat-form-field>
+        <div>
+          <button mat-raised-button color="primary" matStepperNext>Next</button>
+        </div>
+      </ng-template>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Select your role</ng-template>
+      <ng-template matStepContent>
+        <mat-form-field appearance="fill">
+          <mat-label>Role</mat-label>
+          <mat-select formControlName="role" required>
+            <mat-option>--</mat-option>
+            <mat-option *ngFor="let r of roles" [value]="r.name">
+              {{ r.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error> You must select a role </mat-error>
+        </mat-form-field>
+        <div>
+          <button mat-raised-button color="primary" matStepperPrevious>
+            Back
+          </button>
+          <button mat-raised-button color="primary" matStepperNext>Next</button>
+        </div>
+      </ng-template>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Select your rank</ng-template>
+      <ng-template matStepContent>
+        <mat-form-field appearance="fill">
+          <mat-label>Rank</mat-label>
+          <mat-select formControlName="rank" required>
+            <mat-option>--</mat-option>
+            <mat-option *ngFor="let r of ranks" [value]="r.name"
+              >{{ r.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error> You must select a rank </mat-error>
+        </mat-form-field>
+        <div>
+          <button mat-raised-button color="primary" matStepperPrevious>
+            Back
+          </button>
+        </div>
+      </ng-template>
+    </mat-step>
+  </mat-stepper>
+</form>

@@ -29,7 +29,6 @@ export class PlayerService {
 
   checkPlayerWithNickname(nickname: string): Observable<boolean> {
     const url = `${this.apiUrl}/checkNickname/${nickname}`;
-    console.log(url);
     return this.httpClient.get<boolean>(url);
   }
 

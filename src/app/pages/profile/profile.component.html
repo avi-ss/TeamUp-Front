@@ -4,18 +4,34 @@
 <mat-expansion-panel>
   <mat-expansion-panel-header>
     <mat-panel-title>
+      <mat-icon>account_circle</mat-icon>
+    </mat-panel-title>
+    <mat-panel-description> Your account </mat-panel-description>
+  </mat-expansion-panel-header>
+  <ng-template matExpansionPanelContent>
+    <ul>
+      <li>Nickname: {{ player.nickname }}</li>
+      <li>Email: {{ player.email }}</li>
+    </ul>
+  </ng-template>
+  <mat-action-row>
+    <button mat-button color="primary" (click)="editAccountInformation()">
+      <mat-icon>edit</mat-icon>
+      Edit
+    </button>
+  </mat-action-row>
+</mat-expansion-panel>
+
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
       <mat-icon>info</mat-icon>
     </mat-panel-title>
     <mat-panel-description> Basic information about you </mat-panel-description>
   </mat-expansion-panel-header>
   <ng-template matExpansionPanelContent>
-    <h2>Nickname</h2>
-    <mat-form-field appearance="fill">
-      <mat-label>Your nickname</mat-label>
-      <input matInput type="text" [(ngModel)]="player.nickname" />
-    </mat-form-field>
     <ul>
-      <li>Email: {{ player.email }}</li>
+      <li>Full name: {{ player.fullname }}</li>
       <li>Birthday: {{ player.birthday }}</li>
       <li>Gender: {{ player.gender }}</li>
     </ul>
@@ -46,7 +62,7 @@
     </ul>
   </ng-template>
   <mat-action-row>
-    <button mat-button color="primary" (click)="editBasicInformation()">
+    <button mat-button color="primary" (click)="editGamePreferences()">
       <mat-icon>edit</mat-icon>
       Edit
     </button>

@@ -4,6 +4,9 @@ import { TeamService } from 'src/app/services/team/team.service';
 import { Router } from '@angular/router';
 import { Player } from 'src/app/models/Player';
 import { Team } from 'src/app/models/Team';
+import { BasicInfoData } from 'src/app/models/BasicInformation';
+import { MatDialog } from '@angular/material/dialog';
+import { BasicFormComponent } from 'src/app/components/basic-form/basic-form.component';
 
 @Component({
   selector: 'app-profile',
@@ -20,7 +23,8 @@ export class ProfileComponent implements OnInit {
   constructor(
     private playerService: PlayerService,
     private teamService: TeamService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {
     this.player = {
       id: '',
@@ -61,6 +65,23 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  editBasicInformation() {}
-  editGamePreferences() {}
+  editAccountInformation(): void {}
+
+  editBasicInformation(): void {
+    const dialogRef = this.dialog.open(BasicFormComponent, {
+      width: '250px',
+      data: {
+        nickname: this.player.nickname,
+        fullname: this.player.fullname,
+        email: this.player.email,
+        birthday: this.player.birthday,
+        gender: this.player.gender,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
+    });
+  }
+  editGamePreferences(): void {}
 }

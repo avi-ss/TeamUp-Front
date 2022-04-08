@@ -1,0 +1,62 @@
+<form [formGroup]="form">
+  <div>
+    <mat-form-field appearance="fill">
+      <mat-label>Enter your nickname</mat-label>
+      <input
+        matInput
+        placeholder="Nickname"
+        formControlName="nickname"
+        required
+        maxlength="16"
+      />
+      <mat-error *ngIf="getNicknameErrorMessage()">
+        {{ nicknameErrorMessage }}
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field appearance="fill">
+      <mat-label>Enter your email</mat-label>
+      <input
+        matInput
+        placeholder="user@example.com"
+        formControlName="email"
+        required
+      />
+      <mat-error *ngIf="getEmailErrorMessage()">
+        {{ emailErrorMessage }}
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field appearance="fill">
+      <mat-label>Enter your password</mat-label>
+      <input
+        matInput
+        [type]="hide ? 'password' : 'text'"
+        formControlName="password"
+        required
+      />
+      <button mat-icon-button matSuffix (click)="hide = !hide">
+        <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+      </button>
+      <mat-error *ngIf="password?.invalid">
+        {{ getPasswordErrorMessage() }}
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field appearance="fill">
+      <mat-label>Confirm your password</mat-label>
+      <input
+        matInput
+        [type]="hide ? 'password' : 'text'"
+        formControlName="confirmPassword"
+        required
+      />
+      <mat-error *ngIf="confirmPassword?.invalid">
+        {{ getConfirmPasswordErrorMessage() }}
+      </mat-error>
+    </mat-form-field>
+  </div>
+</form>

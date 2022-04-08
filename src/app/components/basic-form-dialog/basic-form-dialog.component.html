@@ -1,0 +1,13 @@
+<div mat-dialog-content>
+  <p>What's your favorite animal?</p>
+  <mat-form-field appearance="fill">
+    <mat-label>Nickname</mat-label>
+    <input matInput [(ngModel)]="data.fullname" />
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button [mat-dialog-close]="data.fullname" cdkFocusInitial>
+    Ok
+  </button>
+</div>

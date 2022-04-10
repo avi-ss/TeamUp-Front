@@ -1,4 +1,4 @@
-import { Component, forwardRef, OnDestroy } from '@angular/core';
+import { Component, forwardRef, Input, OnInit, OnDestroy } from '@angular/core';
 import {
   ControlValueAccessor,
   NG_VALUE_ACCESSOR,
@@ -29,8 +29,11 @@ import { Gender } from 'src/app/models/Gender';
     },
   ],
 })
-export class BasicFormComponent implements ControlValueAccessor, OnDestroy {
-  form: FormGroup;
+export class BasicFormComponent
+  implements ControlValueAccessor, OnInit, OnDestroy
+{
+  @Input() data: BasicInfoData = { fullname: '', birthday: '', gender: '' };
+  form: FormGroup = this.builder.group({});
   subscriptions: Subscription[] = [];
   genders: Gender[] = [
     { name: 'Masculine', value: 'masc' },
@@ -65,10 +68,12 @@ export class BasicFormComponent implements ControlValueAccessor, OnDestroy {
     const currentDate = new Date();
     currentDate.setFullYear(currentDate.getFullYear() - 16);
     this.maxDate = currentDate;
+  }
 
+  ngOnInit(): void {
     this.form = this.builder.group({
       fullname: [
-        '',
+        this.data.fullname,
         [
           Validators.required,
           Validators.minLength(8),
@@ -76,8 +81,8 @@ export class BasicFormComponent implements ControlValueAccessor, OnDestroy {
           Validators.pattern('^[A-Z][a-z]*(\\s[A-Z][a-z]*)?'),
         ],
       ],
-      birthday: ['', [Validators.required]],
-      gender: ['', [Validators.required]],
+      birthday: [this.data.birthday, [Validators.required]],
+      gender: [this.data.gender.toLowerCase(), [Validators.required]],
     });
 
     this.subscriptions.push(

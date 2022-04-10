@@ -38,7 +38,14 @@ export class PreferencesFormComponent
   subscriptions: Subscription[] = [];
 
   get value(): Preferences {
-    return this.form.value;
+    const preferences: Preferences = {
+      game: this.form.value.game,
+      role: this.form.value.role,
+      rank: this.form.value.rank,
+      feminine: false,
+    };
+
+    return preferences;
   }
 
   set value(value: Preferences) {
@@ -71,7 +78,7 @@ export class PreferencesFormComponent
   }
 
   get game() {
-    return this.form.value.basic.game;
+    return this.form.value.game;
   }
 
   get role() {

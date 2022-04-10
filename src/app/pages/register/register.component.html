@@ -1,8 +1,8 @@
 <div class="container">
-  <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
-    <mat-stepper orientation="vertical" [linear]="true" #stepper>
-      <!--STEP 0 : ACCOUNT-->
-      <mat-step [stepControl]="registerForm.value.account">
+  <mat-stepper orientation="vertical" linear #stepper>
+    <!--STEP 0 : ACCOUNT-->
+    <form [formGroup]="registerForm[0]">
+      <mat-step [stepControl]="registerForm[0]">
         <ng-template matStepLabel>Fill your account information</ng-template>
         <h1>Welcome Onboard, Gamer!</h1>
         <p>Let's help you find your perfect team</p>
@@ -11,9 +11,11 @@
           Register
         </button>
       </mat-step>
+    </form>
 
-      <!--STEP 1 : BASIC-->
-      <mat-step [stepControl]="registerForm.value.basic">
+    <!--STEP 1 : BASIC-->
+    <form [formGroup]="registerForm[1]">
+      <mat-step [stepControl]="registerForm[1]">
         <ng-template matStepLabel
           >Fill out your personal information</ng-template
         >
@@ -28,9 +30,11 @@
           </button>
         </div>
       </mat-step>
+    </form>
 
-      <!--STEP 2 : PREFERENCES-->
-      <mat-step [stepControl]="registerForm.value.preferences">
+    <!--STEP 2 : PREFERENCES-->
+    <form [formGroup]="registerForm[2]">
+      <mat-step [stepControl]="registerForm[2]">
         <ng-template matStepLabel>Fill out your game preferences</ng-template>
         <h1>Select your favourite game</h1>
         <app-preferences-form
@@ -41,13 +45,13 @@
             Back
           </button>
           <app-button
-            [disabled]="registerForm.invalid"
-            type="submit"
+            [disabled]="registerForm[2].invalid"
             text="Complete"
+            (btnClick)="onRegister()"
           ></app-button>
         </div>
       </mat-step>
-    </mat-stepper>
-  </form>
+    </form>
+  </mat-stepper>
   <span>Already have an account? <a routerLink="/login">Sign in</a></span>
 </div>

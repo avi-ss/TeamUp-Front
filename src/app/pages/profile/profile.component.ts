@@ -4,9 +4,8 @@ import { TeamService } from 'src/app/services/team/team.service';
 import { Router } from '@angular/router';
 import { Player } from 'src/app/models/Player';
 import { Team } from 'src/app/models/Team';
-import { BasicInfoData } from 'src/app/models/BasicInformation';
 import { MatDialog } from '@angular/material/dialog';
-import { BasicFormComponent } from 'src/app/components/basic-form/basic-form.component';
+import { BasicFormDialogComponent } from 'src/app/components/basic-form-dialog/basic-form-dialog.component';
 
 @Component({
   selector: 'app-profile',
@@ -68,12 +67,9 @@ export class ProfileComponent implements OnInit {
   editAccountInformation(): void {}
 
   editBasicInformation(): void {
-    const dialogRef = this.dialog.open(BasicFormComponent, {
-      width: '250px',
+    const dialogRef = this.dialog.open(BasicFormDialogComponent, {
       data: {
-        nickname: this.player.nickname,
         fullname: this.player.fullname,
-        email: this.player.email,
         birthday: this.player.birthday,
         gender: this.player.gender,
       },
@@ -81,7 +77,21 @@ export class ProfileComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log(result);
+
+      const modifiedPlayer = this.player;
+
+      modifiedPlayer.fullname = result.fullname;
+      modifiedPlayer.birthday = result.birthday;
+      modifiedPlayer.gender = result.gender.toUpperCase();
+
+      this.playerService
+        .modifyPlayer(this.player.id!, modifiedPlayer)
+        .subscribe((result) => {
+          console.log(result);
+          this.router.navigateByUrl(this.router.url);
+        });
     });
   }
+
   editGamePreferences(): void {}
 }

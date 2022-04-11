@@ -1,12 +1,19 @@
-<div mat-dialog-content>
-  <p>What's your favorite animal?</p>
-  <form [formGroup]="basicForm">
+<form [formGroup]="basicForm">
+  <div mat-dialog-content>
+    <h2>Edit your personal information</h2>
     <app-basic-form [data]="data" formControlName="basic"></app-basic-form>
-  </form>
-</div>
-<div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">Close</button>
-  <button mat-button [mat-dialog-close]="basicForm.value.basic" cdkFocusInitial>
-    Save
-  </button>
-</div>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-raised-button color="primary" (click)="onNoClick()">
+      Close
+    </button>
+    <button
+      [disabled]="basicForm.invalid"
+      mat-raised-button
+      color="primary"
+      [mat-dialog-close]="basicForm.value.basic"
+    >
+      Save
+    </button>
+  </div>
+</form>

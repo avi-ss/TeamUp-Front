@@ -1,4 +1,4 @@
-import { Component, forwardRef, OnDestroy } from '@angular/core';
+import { Component, forwardRef, Input, OnDestroy, OnInit } from '@angular/core';
 import {
   ControlValueAccessor,
   NG_VALUE_ACCESSOR,
@@ -9,7 +9,6 @@ import {
   ValidationErrors,
   AbstractControl,
   NG_VALIDATORS,
-  NG_ASYNC_VALIDATORS,
   FormControl,
 } from '@angular/forms';
 import { Observable, map, Subscription } from 'rxjs';
@@ -33,8 +32,16 @@ import { AccountInfoData } from 'src/app/models/AccountInformation';
     },
   ],
 })
-export class AccountFormComponent implements ControlValueAccessor, OnDestroy {
-  form: FormGroup;
+export class AccountFormComponent
+  implements ControlValueAccessor, OnInit, OnDestroy
+{
+  @Input() data: AccountInfoData = {
+    nickname: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  };
+  form: FormGroup = this.builder.group({});
   subscriptions: Subscription[] = [];
   nicknameErrorMessage: string = '';
   emailErrorMessage: string = '';
@@ -53,11 +60,13 @@ export class AccountFormComponent implements ControlValueAccessor, OnDestroy {
   constructor(
     private builder: FormBuilder,
     private playerService: PlayerService
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.form = this.builder.group(
       {
         nickname: [
-          '',
+          this.data.nickname,
           [
             Validators.required,
             Validators.minLength(5),
@@ -66,7 +75,7 @@ export class AccountFormComponent implements ControlValueAccessor, OnDestroy {
           [this.nicknameValidator()],
         ],
         email: [
-          '',
+          this.data.email,
           [Validators.required, Validators.email],
           [this.emailValidator()],
         ],

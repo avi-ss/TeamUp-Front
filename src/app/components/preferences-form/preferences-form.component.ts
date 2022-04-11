@@ -1,4 +1,4 @@
-import { Component, forwardRef, OnDestroy, OnInit } from '@angular/core';
+import { Component, forwardRef, Input, OnDestroy, OnInit } from '@angular/core';
 import {
   ControlValueAccessor,
   NG_VALUE_ACCESSOR,
@@ -33,7 +33,13 @@ import { GameService } from 'src/app/services/game/game.service';
 export class PreferencesFormComponent
   implements ControlValueAccessor, OnDestroy, OnInit
 {
-  form: FormGroup;
+  @Input() data: Preferences = {
+    game: '',
+    role: '',
+    rank: '',
+    feminine: false,
+  };
+  form: FormGroup = this.builder.group({});
   games: Game[] = [];
   subscriptions: Subscription[] = [];
 
@@ -54,11 +60,22 @@ export class PreferencesFormComponent
     this.onTouched();
   }
 
-  constructor(private builder: FormBuilder, private gameService: GameService) {
+  select(g: any) {
+    console.log(g);
+  }
+
+  constructor(private builder: FormBuilder, private gameService: GameService) {}
+
+  ngOnInit(): void {
+    this.gameService.getGames().subscribe((games) => {
+      this.games = games;
+      console.log(games);
+    });
+
     this.form = this.builder.group({
-      game: ['', [Validators.required]],
-      role: ['', [Validators.required]],
-      rank: ['', [Validators.required]],
+      game: [this.data.game, [Validators.required]],
+      role: [this.data.role, [Validators.required]],
+      rank: [this.data.rank, [Validators.required]],
     });
 
     this.subscriptions.push(
@@ -68,13 +85,6 @@ export class PreferencesFormComponent
         this.onTouched();
       })
     );
-  }
-
-  ngOnInit(): void {
-    this.gameService.getGames().subscribe((games) => {
-      this.games = games;
-      console.log(games);
-    });
   }
 
   get game() {

@@ -6,6 +6,9 @@ import { Player } from 'src/app/models/Player';
 import { Team } from 'src/app/models/Team';
 import { MatDialog } from '@angular/material/dialog';
 import { BasicFormDialogComponent } from 'src/app/components/basic-form-dialog/basic-form-dialog.component';
+import { AccountFormDialogComponent } from 'src/app/components/account-form-dialog/account-form-dialog.component';
+import { PreferencesFormDialogComponent } from 'src/app/components/preferences-form-dialog/preferences-form-dialog.component';
+import { DeleteDialogComponent } from 'src/app/components/delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-profile',
@@ -64,7 +67,51 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  editAccountInformation(): void {}
+  private modifyPlayer(modifiedPlayer: Player) {
+    this.playerService
+      .modifyPlayer(this.player.id!, modifiedPlayer)
+      .subscribe((newPlayer) => {
+        console.log(newPlayer);
+        this.player = newPlayer;
+      });
+  }
+
+  deletePlayer(): void {
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {});
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
+
+      if (result == undefined) return;
+
+      this.playerService
+        .deletePlayer(this.player.id!)
+        .subscribe(() => this.router.navigateByUrl('/'));
+    });
+  }
+
+  editAccountInformation(): void {
+    const dialogRef = this.dialog.open(AccountFormDialogComponent, {
+      data: {
+        nickname: this.player.nickname,
+        email: this.player.email,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
+
+      if (result == undefined) return;
+
+      const modifiedPlayer = this.player;
+
+      modifiedPlayer.nickname = result.nickname;
+      modifiedPlayer.email = result.email;
+      modifiedPlayer.password = result.password;
+
+      this.modifyPlayer(modifiedPlayer);
+    });
+  }
 
   editBasicInformation(): void {
     const dialogRef = this.dialog.open(BasicFormDialogComponent, {
@@ -78,20 +125,49 @@ export class ProfileComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       console.log(result);
 
+      if (result == undefined) return;
+
       const modifiedPlayer = this.player;
 
       modifiedPlayer.fullname = result.fullname;
-      modifiedPlayer.birthday = result.birthday;
+      modifiedPlayer.birthday = result.birthday.format('YYYY-MM-DD');
       modifiedPlayer.gender = result.gender.toUpperCase();
 
-      this.playerService
-        .modifyPlayer(this.player.id!, modifiedPlayer)
-        .subscribe((result) => {
-          console.log(result);
-          this.router.navigateByUrl(this.router.url);
-        });
+      // TODO: Cuando envio la contraseña cifrada, me da error de longitud
+      modifiedPlayer.password = 'password123';
+
+      this.modifyPlayer(modifiedPlayer);
     });
   }
 
-  editGamePreferences(): void {}
+  editGamePreferences(): void {
+    const dialogRef = this.dialog.open(PreferencesFormDialogComponent, {
+      data: {
+        game: this.player.preferences.game,
+        rank: this.player.preferences.rank,
+        role: this.player.preferences.role,
+        feminine: this.player.preferences.feminine,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
+
+      if (result == undefined) return;
+
+      const modifiedPlayer = this.player;
+
+      modifiedPlayer.preferences.game = result.game;
+      modifiedPlayer.preferences.role = result.role;
+      modifiedPlayer.preferences.rank = result.rank;
+
+      // TODO: No recoge el value correctamente
+      modifiedPlayer.preferences.feminine = false;
+
+      // TODO: Cuando envio la contraseña cifrada, me da error de longitud
+      modifiedPlayer.password = 'password123';
+
+      this.modifyPlayer(modifiedPlayer);
+    });
+  }
 }

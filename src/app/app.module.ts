@@ -39,6 +39,9 @@ import { MainComponent } from './pages/main/main.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { PreferencesFormComponent } from './components/preferences-form/preferences-form.component';
+import { AccountFormDialogComponent } from './components/account-form-dialog/account-form-dialog.component';
+import { PreferencesFormDialogComponent } from './components/preferences-form-dialog/preferences-form-dialog.component';
+import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
 
 const appRoutes: Routes = [
   {
@@ -76,6 +79,9 @@ const appRoutes: Routes = [
     AccountFormComponent,
     BasicFormDialogComponent,
     PreferencesFormComponent,
+    AccountFormDialogComponent,
+    PreferencesFormDialogComponent,
+    DeleteDialogComponent,
   ],
   imports: [
     BrowserModule,

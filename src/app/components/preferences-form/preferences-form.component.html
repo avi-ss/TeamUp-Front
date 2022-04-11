@@ -2,7 +2,7 @@
   <div>
     <mat-form-field appearance="fill">
       <mat-label>Favourite game</mat-label>
-      <mat-select formControlName="game" required>
+      <mat-select formControlName="game" required (selectionChange)="select($event.value)">
         <mat-option>--</mat-option>
         <mat-option *ngFor="let g of games" [value]="g.name">
           {{ g.name }}
@@ -11,28 +11,30 @@
       <mat-error> You must select a game </mat-error>
     </mat-form-field>
   </div>
-  <div>
-    <mat-form-field appearance="fill">
-      <mat-label>Role</mat-label>
-      <mat-select formControlName="role" required>
-        <mat-option>--</mat-option>
-        <mat-option *ngFor="let r of roles" [value]="r.name">
-          {{ r.name }}
-        </mat-option>
-      </mat-select>
-      <mat-error> You must select a role </mat-error>
-    </mat-form-field>
-  </div>
-  <div>
-    <mat-form-field appearance="fill">
-      <mat-label>Rank</mat-label>
-      <mat-select formControlName="rank" required>
-        <mat-option>--</mat-option>
-        <mat-option *ngFor="let r of ranks" [value]="r.name"
-          >{{ r.name }}
-        </mat-option>
-      </mat-select>
-      <mat-error> You must select a rank </mat-error>
-    </mat-form-field>
+  <div *ngIf="game != null && game != undefined">
+    <div>
+      <mat-form-field appearance="fill">
+        <mat-label>Role</mat-label>
+        <mat-select formControlName="role" required>
+          <mat-option>--</mat-option>
+          <mat-option *ngFor="let r of roles" [value]="r.name">
+            {{ r.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error> You must select a role </mat-error>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field appearance="fill">
+        <mat-label>Rank</mat-label>
+        <mat-select formControlName="rank" required>
+          <mat-option>--</mat-option>
+          <mat-option *ngFor="let r of ranks" [value]="r.name"
+            >{{ r.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error> You must select a rank </mat-error>
+      </mat-form-field>
+    </div>
   </div>
 </form>

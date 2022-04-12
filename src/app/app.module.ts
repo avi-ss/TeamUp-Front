@@ -30,6 +30,7 @@ import { CardComponent } from './components/card/card.component';
 import { BasicFormComponent } from './components/basic-form/basic-form.component';
 import { AccountFormComponent } from './components/account-form/account-form.component';
 import { BasicFormDialogComponent } from './components/basic-form-dialog/basic-form-dialog.component';
+import { interceptorProvider } from './services/interceptor.service';
 
 // Pages
 import { SplashComponent } from './pages/splash/splash.component';
@@ -104,7 +105,7 @@ const appRoutes: Routes = [
     MatStepperModule,
     HammerModule,
   ],
-  providers: [],
+  providers: [interceptorProvider],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

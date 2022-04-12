@@ -12,7 +12,7 @@ import {
   FormControl,
 } from '@angular/forms';
 import { Observable, map, Subscription } from 'rxjs';
-import { PlayerService } from 'src/app/services/player/player.service';
+import { PlayerService } from 'src/app/services/player.service';
 import { AccountInfoData } from 'src/app/models/AccountInformation';
 
 @Component({

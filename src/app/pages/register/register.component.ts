@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Player } from 'src/app/models/Player';
 import { Preferences } from 'src/app/models/Preferences';
-import { PlayerService } from 'src/app/services/player/player.service';
+import { PlayerService } from 'src/app/services/player.service';
 import { Router } from '@angular/router';
 
 @Component({

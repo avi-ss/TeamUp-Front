@@ -1,15 +1,16 @@
-<form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+<form [formGroup]="form">
   <div>
     <mat-form-field appearance="fill">
-      <mat-label>Enter your email</mat-label>
+      <mat-label>Enter your nickname</mat-label>
       <input
         matInput
-        placeholder="user@example.com"
-        formControlName="email"
+        placeholder="Nickname"
+        formControlName="nickname"
         required
+        maxlength="16"
       />
-      <mat-error *ngIf="email?.invalid">
-        {{ getEmailErrorMessage() }}
+      <mat-error *ngIf="nickname?.invalid">
+        {{ getNicknameErrorMessage() }}
       </mat-error>
     </mat-form-field>
   </div>
@@ -30,9 +31,4 @@
       </mat-error>
     </mat-form-field>
   </div>
-  <app-button
-    [disabled]="loginForm.invalid"
-    type="submit"
-    text="Login"
-  ></app-button>
 </form>

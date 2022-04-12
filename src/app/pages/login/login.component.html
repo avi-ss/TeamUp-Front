@@ -1,5 +1,12 @@
 <div class="container">
   <h1>Login screen</h1>
-  <app-login-form></app-login-form>
+  <form [formGroup]="loginForm">
+    <app-login-form formControlName="login"></app-login-form>
+    <app-button
+      [disabled]="loginForm.invalid"
+      text="Login"
+      (btnClick)="onLogin()"
+    ></app-button>
+  </form>
   <span>Don't have an account? <a routerLink="/register">Sign up</a></span>
 </div>

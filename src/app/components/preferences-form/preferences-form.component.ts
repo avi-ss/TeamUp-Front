@@ -11,7 +11,7 @@ import {
 import { Subscription } from 'rxjs';
 import { Game } from 'src/app/models/Game';
 import { Preferences } from 'src/app/models/Preferences';
-import { GameService } from 'src/app/services/game/game.service';
+import { GameService } from 'src/app/services/game.service';
 
 @Component({
   selector: 'app-preferences-form',

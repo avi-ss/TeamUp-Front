@@ -71,6 +71,7 @@ export class AccountFormComponent
             Validators.required,
             Validators.minLength(5),
             Validators.maxLength(16),
+            Validators.pattern('^[^0-9\\\\]\\w+$'),
           ],
           [this.nicknameValidator()],
         ],
@@ -195,6 +196,9 @@ export class AccountFormComponent
         return true;
       } else if (this.nickname?.hasError('nicknameUsed')) {
         this.nicknameErrorMessage = 'Nickname already in use';
+        return true;
+      } else if (this.nickname?.hasError('pattern')) {
+        this.nicknameErrorMessage = 'Only letters and numbers';
         return true;
       }
     }

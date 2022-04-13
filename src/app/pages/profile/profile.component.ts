@@ -9,6 +9,7 @@ import { BasicFormDialogComponent } from 'src/app/components/basic-form-dialog/b
 import { AccountFormDialogComponent } from 'src/app/components/account-form-dialog/account-form-dialog.component';
 import { PreferencesFormDialogComponent } from 'src/app/components/preferences-form-dialog/preferences-form-dialog.component';
 import { DeleteDialogComponent } from 'src/app/components/delete-dialog/delete-dialog.component';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-profile',
@@ -26,7 +27,8 @@ export class ProfileComponent implements OnInit {
     private playerService: PlayerService,
     private teamService: TeamService,
     private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private tokenService: TokenService
   ) {
     this.player = {
       id: '',
@@ -45,26 +47,32 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    /*
     const routeArray = this.router.url.split('/');
-    const id: string = routeArray[routeArray.length - 1];
+    const routeNickname: string = routeArray[routeArray.length - 1];
+    */
 
-    console.log(id);
+    const loggedNickname: string = this.tokenService.getNickname()!;
 
-    this.playerService.getPlayerById(id).subscribe((player) => {
-      this.player = player;
-      console.log(this.player.team);
-      if (this.player.team != undefined) {
-        this.hasTeam = true;
-        this.teamService.getTeamById(player.team!).subscribe((team) => {
-          this.playerTeam = team;
-          this.playerTeam.members.forEach((id) => {
-            this.playerService.getPlayerById(id).subscribe((member) => {
-              this.teamMembers.push(member);
+    console.log(loggedNickname);
+
+    this.playerService
+      .getPlayerByNickname(loggedNickname)
+      .subscribe((player) => {
+        this.player = player;
+        console.log(this.player.team);
+        if (this.player.team != undefined) {
+          this.hasTeam = true;
+          this.teamService.getTeamById(player.team!).subscribe((team) => {
+            this.playerTeam = team;
+            this.playerTeam.members.forEach((id) => {
+              this.playerService.getPlayerById(id).subscribe((member) => {
+                this.teamMembers.push(member);
+              });
             });
           });
-        });
-      }
-    });
+        }
+      });
   }
 
   private modifyPlayer(modifiedPlayer: Player) {
@@ -76,6 +84,10 @@ export class ProfileComponent implements OnInit {
       });
   }
 
+  logOut(): void {
+    this.tokenService.logOut();
+  }
+
   deletePlayer(): void {
     const dialogRef = this.dialog.open(DeleteDialogComponent, {});
 
@@ -84,9 +96,9 @@ export class ProfileComponent implements OnInit {
 
       if (result == undefined) return;
 
-      this.playerService
-        .deletePlayer(this.player.id!)
-        .subscribe(() => this.router.navigateByUrl('/'));
+      this.playerService.deletePlayer(this.player.id!).subscribe(() => {
+        this.tokenService.logOut();
+      });
     });
   }
 

@@ -27,6 +27,11 @@ export class PlayerService {
     return this.httpClient.get<Player>(url);
   }
 
+  getPlayerByNickname(nickname: string): Observable<Player> {
+    const url = `${this.apiUrl}/nickname/${nickname}`;
+    return this.httpClient.get<Player>(url);
+  }
+
   checkPlayerWithNickname(nickname: string): Observable<boolean> {
     const url = `${this.apiUrl}/checkNickname/${nickname}`;
     return this.httpClient.get<boolean>(url);

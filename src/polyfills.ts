@@ -50,3 +50,6 @@ import 'zone.js'; // Included with Angular CLI.
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
+
+// Evita global error, compatibilidad con todos los navegadores
+(window as any).global = window;

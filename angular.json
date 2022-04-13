@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "TeamFinderApp-Front": {
+    "TeamUp-Front": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/team-finder-app-front",
+            "outputPath": "dist/team-up-front",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -65,10 +65,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "TeamFinderApp-Front:build:production"
+              "browserTarget": "TeamUp-Front:build:production"
             },
             "development": {
-              "browserTarget": "TeamFinderApp-Front:build:development"
+              "browserTarget": "TeamUp-Front:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -76,7 +76,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "TeamFinderApp-Front:build"
+            "browserTarget": "TeamUp-Front:build"
           }
         },
         "test": {
@@ -97,5 +97,5 @@
       }
     }
   },
-  "defaultProject": "TeamFinderApp-Front"
+  "defaultProject": "TeamUp-Front"
 }

@@ -1,3 +1,6 @@
+<!--FOOTER-->
+<app-footer></app-footer>
+
 <h1>Profile of {{ player.nickname }}</h1>
 <h3>{{ player.fullname }}</h3>
 
@@ -18,6 +21,10 @@
     <button mat-button color="primary" (click)="editAccountInformation()">
       <mat-icon>edit</mat-icon>
       Edit
+    </button>
+    <button mat-button color="primary" (click)="logOut()">
+      <mat-icon>logout</mat-icon>
+      Logout
     </button>
     <button mat-button color="warn" (click)="deletePlayer()">
       <mat-icon>delete</mat-icon>

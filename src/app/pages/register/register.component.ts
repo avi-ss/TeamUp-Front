@@ -4,11 +4,15 @@ import { Player } from 'src/app/models/Player';
 import { Preferences } from 'src/app/models/Preferences';
 import { PlayerService } from 'src/app/services/player.service';
 import { Router } from '@angular/router';
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
+  providers: [
+    { provide: STEPPER_GLOBAL_OPTIONS, useValue: { showError: true } },
+  ],
 })
 export class RegisterComponent {
   registerForm: FormGroup[] = [];
@@ -55,10 +59,15 @@ export class RegisterComponent {
 
     console.log(player);
 
-    this.playerService.addPlayer(player).subscribe((result) => {
-      console.log(result);
-      this.router.navigateByUrl('/main/player/' + `${result}`);
-    });
+    this.playerService.addPlayer(player).subscribe(
+      (result) => {
+        console.log(result);
+        this.router.navigateByUrl('/login');
+      },
+      (error) => {
+        console.log('ERROR: ' + error);
+      }
+    );
   }
 
   get nickname() {

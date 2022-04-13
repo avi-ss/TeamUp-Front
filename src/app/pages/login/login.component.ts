@@ -31,9 +31,8 @@ export class LoginComponent implements OnInit {
       (data) => {
         // En este punto nos hemos logueado correctamente
         this.tokenService.setToken(data.token);
-
         console.log('Logueado correctamente');
-        //this.router.navigateByUrl("main/player/" + )
+        this.router.navigateByUrl('/profile');
       },
       (error) => {
         // Ha habido un problema durante el login

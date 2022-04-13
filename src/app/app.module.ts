@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule, Routes } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HammerModule } from '@angular/platform-browser';
 
@@ -20,9 +19,11 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 // Components
 import { AppComponent } from './app.component';
+import { RoutingModule } from './routing.module';
 import { GamesComponent } from './components/games/games.component';
 import { ButtonComponent } from './components/button/button.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
@@ -36,32 +37,15 @@ import { interceptorProvider } from './services/interceptor.service';
 import { SplashComponent } from './pages/splash/splash.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
-import { MainComponent } from './pages/main/main.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { PreferencesFormComponent } from './components/preferences-form/preferences-form.component';
 import { AccountFormDialogComponent } from './components/account-form-dialog/account-form-dialog.component';
 import { PreferencesFormDialogComponent } from './components/preferences-form-dialog/preferences-form-dialog.component';
 import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
-
-const appRoutes: Routes = [
-  {
-    path: '',
-    component: SplashComponent,
-  },
-  {
-    path: 'login',
-    component: LoginComponent,
-  },
-  {
-    path: 'register',
-    component: RegisterComponent,
-  },
-  {
-    path: 'main/player/:id',
-    component: MainComponent,
-  },
-];
+import { FeedComponent } from './pages/feed/feed.component';
+import { TournamentsComponent } from './pages/tournaments/tournaments.component';
+import { MessagesComponent } from './pages/messages/messages.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +57,6 @@ const appRoutes: Routes = [
     LoginFormComponent,
     RegisterComponent,
     CardComponent,
-    MainComponent,
     ProfileComponent,
     FooterComponent,
     BasicFormComponent,
@@ -83,13 +66,16 @@ const appRoutes: Routes = [
     AccountFormDialogComponent,
     PreferencesFormDialogComponent,
     DeleteDialogComponent,
+    FeedComponent,
+    TournamentsComponent,
+    MessagesComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(appRoutes, { onSameUrlNavigation: 'reload' }),
+    RoutingModule,
     BrowserAnimationsModule,
     MatButtonModule,
     MatFormFieldModule,
@@ -103,6 +89,7 @@ const appRoutes: Routes = [
     MatCardModule,
     MatTabsModule,
     MatStepperModule,
+    MatToolbarModule,
     HammerModule,
   ],
   providers: [interceptorProvider],

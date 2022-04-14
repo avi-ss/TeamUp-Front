@@ -53,10 +53,11 @@ export class MessagesComponent implements OnInit {
       console.log(
         'Conexión activa: ' + this.client.connected + ', ' + frameElement
       );
-      this.client.subscribe(
-        '/user/' + this.currentUser.id + '/queue/messages',
-        (e) => this.onMessageRecieved
-      );
+
+      const url: string = '/app/user/' + this.currentUser.id + '/user/queue';
+      console.log(url);
+
+      this.client.subscribe(url, this.onMessageRecieved);
     };
 
     // Error handling
@@ -112,7 +113,7 @@ export class MessagesComponent implements OnInit {
       };
       // Lo enviamos al broker
       this.client.publish({
-        destination: '/app/chat',
+        destination: '/app/private',
         body: JSON.stringify(message),
       });
       // Añadimos el mensaje a la lista de mensajes

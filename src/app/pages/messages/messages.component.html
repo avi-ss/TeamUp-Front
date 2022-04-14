@@ -1,4 +1,49 @@
 <!--FOOTER-->
 <app-footer></app-footer>
 
-<p>messages works!</p>
+<!--CHAT COMPONENT-->
+<mat-drawer-container class="example-container" autosize>
+  <mat-drawer #drawer class="example-sidenav" mode="side">
+    <!--CONTACT LIST-->
+    <mat-selection-list #contactList [multiple]="false">
+      <mat-list-option
+        *ngFor="let contact of contacts"
+        (click)="onContactChange(contact)"
+        [value]="contact"
+      >
+        <mat-icon mat-list-icon>account_circle</mat-icon>
+        <div mat-line>{{ contact.nickname }}</div>
+        <mat-divider></mat-divider>
+      </mat-list-option>
+    </mat-selection-list>
+  </mat-drawer>
+
+  <div class="example-sidenav-content">
+    <button mat-mini-fab color="primary" (click)="drawer.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <div *ngIf="isContactActive">
+      <mat-list>
+        <mat-list-item *ngFor="let msg of messages"
+          ><mat-icon mat-list-icon>account_circle</mat-icon>
+          <div mat-line>
+            <b>{{ msg.senderName }}</b>
+          </div>
+          <div mat-line>
+            {{ msg.timestamp | date: "shortTime" }} - {{ msg.content }}
+          </div>
+        </mat-list-item>
+      </mat-list>
+      <p>
+        <mat-form-field appearance="legacy">
+          <mat-label>Text your message</mat-label>
+          <input matInput [(ngModel)]="messageText" />
+          <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+        </mat-form-field>
+        <button mat-mini-fab color="primary" (click)="sendMessage()">
+          <mat-icon>send</mat-icon>
+        </button>
+      </p>
+    </div>
+  </div>
+</mat-drawer-container>

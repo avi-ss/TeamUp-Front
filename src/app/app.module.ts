@@ -20,6 +20,10 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatListModule } from '@angular/material/list';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatDividerModule } from '@angular/material/divider';
 
 // Components
 import { AppComponent } from './app.component';
@@ -79,6 +83,7 @@ import { MessagesComponent } from './pages/messages/messages.component';
     BrowserAnimationsModule,
     MatButtonModule,
     MatFormFieldModule,
+    MatListModule,
     MatInputModule,
     MatIconModule,
     MatDatepickerModule,
@@ -88,8 +93,11 @@ import { MessagesComponent } from './pages/messages/messages.component';
     MatDialogModule,
     MatCardModule,
     MatTabsModule,
+    MatSidenavModule,
     MatStepperModule,
     MatToolbarModule,
+    MatDividerModule,
+    MatSnackBarModule,
     HammerModule,
   ],
   providers: [interceptorProvider],

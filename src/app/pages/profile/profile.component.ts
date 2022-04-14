@@ -26,7 +26,6 @@ export class ProfileComponent implements OnInit {
   constructor(
     private playerService: PlayerService,
     private teamService: TeamService,
-    private router: Router,
     private dialog: MatDialog,
     private tokenService: TokenService
   ) {

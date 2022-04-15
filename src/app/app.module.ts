@@ -34,7 +34,6 @@ import { LoginFormComponent } from './components/login-form/login-form.component
 import { CardComponent } from './components/card/card.component';
 import { BasicFormComponent } from './components/basic-form/basic-form.component';
 import { AccountFormComponent } from './components/account-form/account-form.component';
-import { BasicFormDialogComponent } from './components/basic-form-dialog/basic-form-dialog.component';
 import { interceptorProvider } from './services/interceptor.service';
 
 // Pages
@@ -42,14 +41,12 @@ import { SplashComponent } from './pages/splash/splash.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { ProfileComponent } from './pages/profile/profile.component';
-import { FooterComponent } from './components/footer/footer.component';
 import { PreferencesFormComponent } from './components/preferences-form/preferences-form.component';
-import { AccountFormDialogComponent } from './components/account-form-dialog/account-form-dialog.component';
-import { PreferencesFormDialogComponent } from './components/preferences-form-dialog/preferences-form-dialog.component';
 import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
 import { FeedComponent } from './pages/feed/feed.component';
 import { TournamentsComponent } from './pages/tournaments/tournaments.component';
 import { MessagesComponent } from './pages/messages/messages.component';
+import { LogoutDialogComponent } from './components/logout-dialog/logout-dialog.component';
 
 @NgModule({
   declarations: [
@@ -62,17 +59,14 @@ import { MessagesComponent } from './pages/messages/messages.component';
     RegisterComponent,
     CardComponent,
     ProfileComponent,
-    FooterComponent,
     BasicFormComponent,
     AccountFormComponent,
-    BasicFormDialogComponent,
     PreferencesFormComponent,
-    AccountFormDialogComponent,
-    PreferencesFormDialogComponent,
     DeleteDialogComponent,
     FeedComponent,
     TournamentsComponent,
     MessagesComponent,
+    LogoutDialogComponent,
   ],
   imports: [
     BrowserModule,

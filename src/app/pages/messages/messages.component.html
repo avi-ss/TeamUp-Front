@@ -1,9 +1,18 @@
-<!--FOOTER-->
-<app-footer></app-footer>
+<mat-toolbar class="mat-elevation-z6">
+  <button
+    mat-icon-button
+    *ngIf="messagesSidenav.mode === 'over'"
+    (click)="messagesSidenav.toggle()"
+  >
+    <mat-icon *ngIf="!messagesSidenav.opened">menu</mat-icon>
+    <mat-icon *ngIf="messagesSidenav.opened">close</mat-icon>
+  </button>
+  Messages
+</mat-toolbar>
 
 <!--CHAT COMPONENT-->
-<mat-drawer-container class="example-container" autosize>
-  <mat-drawer #drawer class="example-sidenav" mode="side">
+<mat-sidenav-container autosize class="mat-elevation-z6">
+  <mat-sidenav #messagesSidenav="matSidenav">
     <!--CONTACT LIST-->
     <mat-selection-list #contactList [multiple]="false">
       <mat-list-option
@@ -16,12 +25,9 @@
         <mat-divider></mat-divider>
       </mat-list-option>
     </mat-selection-list>
-  </mat-drawer>
+  </mat-sidenav>
 
-  <div class="example-sidenav-content">
-    <button mat-mini-fab color="primary" (click)="drawer.toggle()">
-      <mat-icon>menu</mat-icon>
-    </button>
+  <mat-sidenav-content>
     <div *ngIf="isContactActive">
       <mat-list>
         <mat-list-item *ngFor="let msg of messages"
@@ -34,15 +40,20 @@
           </div>
         </mat-list-item>
       </mat-list>
-      <p>
+      <div class="bottom-bar mat-elevation-z6">
         <mat-form-field appearance="legacy">
           <mat-label>Text your message</mat-label>
           <input matInput [(ngModel)]="messageText" />
         </mat-form-field>
-        <button mat-mini-fab color="primary" (click)="sendMessage()">
+        <button
+          class="send-button"
+          mat-mini-fab
+          color="primary"
+          (click)="sendMessage()"
+        >
           <mat-icon>send</mat-icon>
         </button>
-      </p>
+      </div>
     </div>
-  </div>
-</mat-drawer-container>
+  </mat-sidenav-content>
+</mat-sidenav-container>

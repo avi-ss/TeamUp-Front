@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatSidenav } from '@angular/material/sidenav';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Client, IMessage } from '@stomp/stompjs';
 import * as SockJS from 'sockjs-client';
@@ -16,6 +18,9 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./messages.component.css'],
 })
 export class MessagesComponent implements OnInit {
+  @ViewChild(MatSidenav)
+  messagesSidenav: MatSidenav;
+
   // Conexión to the broker
   private url: string = 'http://localhost:8080/ws';
   private client: Client;
@@ -32,7 +37,8 @@ export class MessagesComponent implements OnInit {
     private chatService: ChatService,
     private playerService: PlayerService,
     private userService: UserService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private observer: BreakpointObserver
   ) {}
 
   ngOnInit(): void {
@@ -153,5 +159,17 @@ export class MessagesComponent implements OnInit {
           });
         });
       });
+  }
+
+  ngAfterViewInit() {
+    this.observer.observe(['(max-width: 800px)']).subscribe((res) => {
+      if (res.matches) {
+        this.messagesSidenav.mode = 'over';
+        this.messagesSidenav.close();
+      } else {
+        this.messagesSidenav.mode = 'side';
+        this.messagesSidenav.open();
+      }
+    });
   }
 }

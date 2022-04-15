@@ -36,9 +36,9 @@ export class BasicFormComponent
   form: FormGroup = this.builder.group({});
   subscriptions: Subscription[] = [];
   genders: Gender[] = [
-    { name: 'Masculine', value: 'masc' },
-    { name: 'Feminine', value: 'fem' },
-    { name: 'Other', value: 'other' },
+    { name: 'Masculine', value: 'MASC' },
+    { name: 'Feminine', value: 'FEM' },
+    { name: 'Other', value: 'OTHER' },
   ];
   maxDate: Date = new Date();
 

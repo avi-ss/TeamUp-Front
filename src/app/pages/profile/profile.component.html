@@ -1,93 +1,153 @@
-<!--FOOTER-->
-<app-footer></app-footer>
+<div *ngIf="dataLoaded | async">
+  <div class="header">
+    <h1>Profile of {{ player.nickname }}</h1>
+    <h3>{{ player.fullname }}</h3>
+  </div>
 
-<h1>Profile of {{ player.nickname }}</h1>
-<h3>{{ player.fullname }}</h3>
+  <div class="content">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon>account_circle</mat-icon>
+        </mat-panel-title>
+        <mat-panel-description> Your account </mat-panel-description>
+      </mat-expansion-panel-header>
+      <ng-template matExpansionPanelContent>
+        <form [formGroup]="accountForm">
+          <div class="form">
+            <mat-form-field appearance="legacy">
+              <mat-label>Your nickname</mat-label>
+              <input
+                matInput
+                formControlName="nickname"
+                required
+                maxlength="16"
+              />
+              <mat-error *ngIf="getNicknameErrorMessage()">
+                {{ nicknameErrorMessage }}
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="legacy">
+              <mat-label>Your email</mat-label>
+              <input matInput formControlName="email" required />
+              <mat-error *ngIf="getEmailErrorMessage()">
+                {{ emailErrorMessage }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </form>
+      </ng-template>
+      <mat-action-row>
+        <button
+          [disabled]="accountForm.invalid"
+          mat-button
+          color="primary"
+          (click)="editAccountInformation()"
+        >
+          <mat-icon>edit</mat-icon>
+          Edit
+        </button>
+        <button mat-button color="primary" (click)="logOut()">
+          <mat-icon>logout</mat-icon>
+          Logout
+        </button>
+        <button mat-button color="warn" (click)="deletePlayer()">
+          <mat-icon>delete</mat-icon>
+          Delete
+        </button>
+      </mat-action-row>
+    </mat-expansion-panel>
 
-<mat-expansion-panel>
-  <mat-expansion-panel-header>
-    <mat-panel-title>
-      <mat-icon>account_circle</mat-icon>
-    </mat-panel-title>
-    <mat-panel-description> Your account </mat-panel-description>
-  </mat-expansion-panel-header>
-  <ng-template matExpansionPanelContent>
-    <ul>
-      <li>Nickname: {{ player.nickname }}</li>
-      <li>Email: {{ player.email }}</li>
-    </ul>
-  </ng-template>
-  <mat-action-row>
-    <button mat-button color="primary" (click)="editAccountInformation()">
-      <mat-icon>edit</mat-icon>
-      Edit
-    </button>
-    <button mat-button color="primary" (click)="logOut()">
-      <mat-icon>logout</mat-icon>
-      Logout
-    </button>
-    <button mat-button color="warn" (click)="deletePlayer()">
-      <mat-icon>delete</mat-icon>
-      Delete
-    </button>
-  </mat-action-row>
-</mat-expansion-panel>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon>info</mat-icon>
+        </mat-panel-title>
+        <mat-panel-description>
+          Basic information about you
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <ng-template matExpansionPanelContent>
+        <form [formGroup]="basicInfoForm">
+          <div class="form">
+            <mat-form-field appearance="legacy">
+              <mat-label>Your name</mat-label>
+              <input matInput formControlName="fullname" required />
+              <mat-error *ngIf="fullname?.invalid">
+                Name must contain only letters and minimum of 8 letters
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="legacy">
+              <mat-label>Your birthday</mat-label>
+              <input
+                matInput
+                [max]="maxDate"
+                [matDatepicker]="picker"
+                formControlName="birthday"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker touchUi #picker></mat-datepicker>
+              <mat-error> You must have at least 16 years old </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="legacy">
+              <mat-label>Your gender</mat-label>
+              <mat-select formControlName="gender" required>
+                <mat-option *ngFor="let g of genders" [value]="g.value">
+                  {{ g.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error> Please choose a gender </mat-error>
+            </mat-form-field>
+          </div>
+        </form>
+      </ng-template>
+      <mat-action-row>
+        <button mat-button color="primary" (click)="editBasicInformation()">
+          <mat-icon>edit</mat-icon>
+          Edit
+        </button>
+      </mat-action-row>
+    </mat-expansion-panel>
 
-<mat-expansion-panel>
-  <mat-expansion-panel-header>
-    <mat-panel-title>
-      <mat-icon>info</mat-icon>
-    </mat-panel-title>
-    <mat-panel-description> Basic information about you </mat-panel-description>
-  </mat-expansion-panel-header>
-  <ng-template matExpansionPanelContent>
-    <ul>
-      <li>Full name: {{ player.fullname }}</li>
-      <li>Birthday: {{ player.birthday }}</li>
-      <li>Gender: {{ player.gender }}</li>
-    </ul>
-  </ng-template>
-  <mat-action-row>
-    <button mat-button color="primary" (click)="editBasicInformation()">
-      <mat-icon>edit</mat-icon>
-      Edit
-    </button>
-  </mat-action-row>
-</mat-expansion-panel>
+    <!--TEAM CARD-->
+    <mat-card *ngIf="hasTeam">
+      <mat-card-title>{{ player.preferences.game }} Team</mat-card-title>
+      <mat-card-subtitle>{{ playerTeam.id }}</mat-card-subtitle>
+      <mat-card-content>
+        <mat-list>
+          <mat-list-item *ngFor="let member of teamMembers"
+            ><mat-icon mat-list-icon>account_circle</mat-icon>
+            <div mat-line>
+              <b>{{ member.nickname }}</b>
+            </div>
+            <div mat-line>
+              Role: {{ member.preferences.role }} - Rank:
+              {{ member.preferences.rank }}
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button color="primary" (click)="editGamePreferences()">
+          <mat-icon>settings</mat-icon>
+          Edit
+        </button>
+      </mat-card-actions>
+    </mat-card>
 
-<mat-expansion-panel>
-  <mat-expansion-panel-header>
-    <mat-panel-title>
-      <mat-icon>settings</mat-icon>
-    </mat-panel-title>
-    <mat-panel-description>
-      Your game preferences to search a team
-    </mat-panel-description>
-  </mat-expansion-panel-header>
-  <ng-template matExpansionPanelContent>
-    <ul>
-      <li>Game: {{ player.preferences.game }}</li>
-      <li>Rank: {{ player.preferences.rank }}</li>
-      <li>Role: {{ player.preferences.role }}</li>
-      <li>Only feminine: {{ player.preferences.feminine }}</li>
-    </ul>
-  </ng-template>
-  <mat-action-row>
-    <button mat-button color="primary" (click)="editGamePreferences()">
-      <mat-icon>edit</mat-icon>
-      Edit
-    </button>
-  </mat-action-row>
-</mat-expansion-panel>
-
-<mat-card *ngIf="hasTeam">
-  <mat-card-title>Team Name</mat-card-title>
-  <mat-card-subtitle>{{ playerTeam.id }}</mat-card-subtitle>
-  <mat-card-content>
-    <div *ngFor="let member of teamMembers">{{ member.nickname }}</div>
-  </mat-card-content>
-</mat-card>
-<mat-card *ngIf="!hasTeam">
-  <mat-card-title>You have no team</mat-card-title>
-  <mat-card-subtitle>Go search a team!</mat-card-subtitle>
-</mat-card>
+    <!--NO TEAM CARD-->
+    <mat-card *ngIf="!hasTeam">
+      <mat-card-title>You have no team</mat-card-title>
+      <mat-card-subtitle>Go search a team!</mat-card-subtitle>
+      <mat-card-actions>
+        <button mat-button color="primary" (click)="editGamePreferences()">
+          <mat-icon>settings</mat-icon>
+          Edit
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

@@ -1,5 +1,12 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { Component, ViewChild } from '@angular/core';
+import {
+  AfterViewChecked,
+  Component,
+  ContentChild,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 
 @Component({
@@ -8,25 +15,42 @@ import { MatSidenav } from '@angular/material/sidenav';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  @ViewChild(MatSidenav)
-  sidenav: MatSidenav;
+  isOpen: boolean = false;
+  isOver: boolean = true;
 
   width: number = 30;
   contentPaddingLeft: number = 32;
 
-  constructor(private observer: BreakpointObserver) {}
+  // Declaring the Promise, yes! Promise!
+  dataLoaded: Promise<boolean>;
+
+  constructor(private observer: BreakpointObserver) {
+    if (window.innerWidth < 800) {
+      this.width = 70;
+      this.contentPaddingLeft = 0;
+      this.isOpen = false;
+      this.isOver = true;
+    } else {
+      this.width = 30;
+      this.contentPaddingLeft = 32;
+      this.isOpen = true;
+      this.isOver = false;
+    }
+  }
 
   ngAfterViewInit() {
     this.observer.observe(['(max-width: 800px)']).subscribe((res) => {
+      this.dataLoaded = Promise.resolve(true);
+
       if (res.matches) {
-        this.sidenav.mode = 'over';
-        this.sidenav.close();
+        this.isOver = true;
+        this.isOpen = false;
 
         this.width = 70;
         this.contentPaddingLeft = 0;
       } else {
-        this.sidenav.mode = 'side';
-        this.sidenav.open();
+        this.isOver = false;
+        this.isOpen = true;
 
         this.width = 30;
         this.contentPaddingLeft = 32;
@@ -37,7 +61,7 @@ export class AppComponent {
   toggleSidenav(): void {
     this.observer.observe(['(max-width: 800px)']).subscribe((res) => {
       if (res.matches) {
-        this.sidenav.close();
+        this.isOpen = false;
       } else {
         return;
       }

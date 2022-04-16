@@ -1,18 +1,22 @@
-<mat-toolbar class="toolbar mat-elevation-z6" color="primary">
-  <button
-    mat-icon-button
-    *ngIf="sidenav.mode === 'over'"
-    (click)="sidenav.toggle()"
-  >
-    <mat-icon *ngIf="!sidenav.opened">menu</mat-icon>
-    <mat-icon *ngIf="sidenav.opened">close</mat-icon>
-  </button>
-  Team Up
-</mat-toolbar>
+<div *ngIf="dataLoaded | async">
+  <mat-toolbar class="toolbar mat-elevation-z6" color="primary">
+    <button
+      mat-icon-button
+      *ngIf="sidenav.mode === 'over'"
+      (click)="sidenav.toggle()"
+    >
+      <mat-icon *ngIf="!sidenav.opened">menu</mat-icon>
+      <mat-icon *ngIf="sidenav.opened">close</mat-icon>
+    </button>
+    Team Up
+  </mat-toolbar>
+</div>
 
 <mat-sidenav-container>
   <mat-sidenav
-    #sidenav="matSidenav"
+    #sidenav
+    [opened]="isOpen"
+    [mode]="isOver ? 'over' : 'side'"
     class="mat-elevation-z6"
     [style.width.%]="[width]"
   >

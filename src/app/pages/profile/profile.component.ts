@@ -87,7 +87,6 @@ export class ProfileComponent implements OnInit {
         this.createAccountForm();
         this.createBasicInfoForm();
 
-        console.log(this.player.team);
         if (this.player.team != undefined) {
           this.hasTeam = true;
           this.teamService.getTeamById(player.team!).subscribe((team) => {
@@ -99,6 +98,8 @@ export class ProfileComponent implements OnInit {
               });
             });
           });
+        } else {
+          this.dataLoaded = Promise.resolve(true);
         }
       });
   }

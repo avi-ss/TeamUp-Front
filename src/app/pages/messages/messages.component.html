@@ -1,18 +1,18 @@
 <mat-toolbar class="mat-elevation-z6">
-  <button
-    mat-icon-button
-    *ngIf="messagesSidenav.mode === 'over'"
-    (click)="messagesSidenav.toggle()"
-  >
-    <mat-icon *ngIf="!messagesSidenav.opened">menu</mat-icon>
-    <mat-icon *ngIf="messagesSidenav.opened">close</mat-icon>
+  <button mat-icon-button *ngIf="isOver" (click)="messagesSidenav.toggle()">
+    <mat-icon *ngIf="!isOpen">menu</mat-icon>
+    <mat-icon *ngIf="isOpen">close</mat-icon>
   </button>
   Messages
 </mat-toolbar>
 
 <!--CHAT COMPONENT-->
 <mat-sidenav-container autosize class="mat-elevation-z6">
-  <mat-sidenav #messagesSidenav="matSidenav">
+  <mat-sidenav
+    #messagesSidenav="matSidenav"
+    [opened]="isOpen"
+    [mode]="isOver ? 'over' : 'side'"
+  >
     <!--CONTACT LIST-->
     <mat-selection-list #contactList [multiple]="false">
       <mat-list-option
@@ -28,8 +28,8 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <div *ngIf="isContactActive">
-      <mat-list>
+    <div *ngIf="isContactActive" class="chat-container">
+      <mat-list #scrollMe>
         <mat-list-item *ngFor="let msg of messages"
           ><mat-icon mat-list-icon>account_circle</mat-icon>
           <div mat-line>

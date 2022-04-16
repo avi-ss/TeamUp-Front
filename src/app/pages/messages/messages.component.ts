@@ -1,5 +1,11 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewChecked,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Client, IMessage } from '@stomp/stompjs';
@@ -18,8 +24,10 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./messages.component.css'],
 })
 export class MessagesComponent implements OnInit {
-  @ViewChild(MatSidenav)
-  messagesSidenav: MatSidenav;
+  isOpen: boolean = false;
+  isOver: boolean = true;
+
+  @ViewChild('scrollMe') myScrollContainer: ElementRef;
 
   // Conexión to the broker
   private url: string = 'http://localhost:8080/ws';
@@ -39,12 +47,22 @@ export class MessagesComponent implements OnInit {
     private userService: UserService,
     private snackBar: MatSnackBar,
     private observer: BreakpointObserver
-  ) {}
+  ) {
+    if (window.innerWidth < 600) {
+      this.isOpen = false;
+      this.isOver = true;
+    } else {
+      this.isOpen = true;
+      this.isOver = false;
+    }
+  }
 
   ngOnInit(): void {
     // Obtenemos el usuario actual y la lista de contactos como los usuarios
     // que hicieron match con el usuario actual
     this.loadData();
+
+    this.scrollToBottom();
 
     // Creamos el STOMP
     this.client = new Client();
@@ -60,7 +78,7 @@ export class MessagesComponent implements OnInit {
         'Conexión activa: ' + this.client.connected + ', ' + frameElement
       );
 
-      const url: string = '/app/user/' + this.currentUser.id + '/user/queue';
+      const url: string = '/user/' + this.currentUser.id + '/user/queue';
       console.log(url);
 
       this.client.subscribe(url, this.onMessageRecieved);
@@ -161,14 +179,21 @@ export class MessagesComponent implements OnInit {
       });
   }
 
+  scrollToBottom(): void {
+    try {
+      this.myScrollContainer.nativeElement.scrollTop =
+        this.myScrollContainer.nativeElement.scrollHeight;
+    } catch (err) {}
+  }
+
   ngAfterViewInit() {
-    this.observer.observe(['(max-width: 800px)']).subscribe((res) => {
+    this.observer.observe(['(max-width: 600px)']).subscribe((res) => {
       if (res.matches) {
-        this.messagesSidenav.mode = 'over';
-        this.messagesSidenav.close();
+        this.isOver = true;
+        this.isOpen = false;
       } else {
-        this.messagesSidenav.mode = 'side';
-        this.messagesSidenav.open();
+        this.isOver = false;
+        this.isOpen = true;
       }
     });
   }

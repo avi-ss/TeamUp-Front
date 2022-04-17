@@ -32,6 +32,16 @@ export class PlayerService {
     return this.httpClient.get<Player>(url);
   }
 
+  getAllPlayersForPlayer(id: string): Observable<Player[]> {
+    const url = `${this.apiUrl}/forPlayer/${id}`;
+    return this.httpClient.get<Player[]>(url);
+  }
+
+  getAllPlayersForTeam(id: string): Observable<Player[]> {
+    const url = `${this.apiUrl}/forTeam/${id}`;
+    return this.httpClient.get<Player[]>(url);
+  }
+
   checkPlayerWithNickname(nickname: string): Observable<boolean> {
     const url = `${this.apiUrl}/checkNickname/${nickname}`;
     return this.httpClient.get<boolean>(url);

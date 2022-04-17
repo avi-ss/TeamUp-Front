@@ -38,6 +38,7 @@ export class PreferencesFormComponent
     role: '',
     rank: '',
     feminine: false,
+    wantedUser: 'user',
   };
   form: FormGroup = this.builder.group({});
   games: Game[] = [];
@@ -49,6 +50,7 @@ export class PreferencesFormComponent
       role: this.form.value.role,
       rank: this.form.value.rank,
       feminine: false,
+      wantedUser: this.form.value.wantedUser,
     };
 
     return preferences;

@@ -17,8 +17,10 @@ import {
 } from '@angular/forms';
 import { map, Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AuthService } from 'src/app/services/auth.service';
 import { LogoutDialogComponent } from 'src/app/components/logout-dialog/logout-dialog.component';
+import { Game } from 'src/app/models/Game';
+import { GameService } from 'src/app/services/game.service';
+import { TeamPreferences } from 'src/app/models/TeamPreferences';
 
 @Component({
   selector: 'app-profile',
@@ -28,9 +30,10 @@ import { LogoutDialogComponent } from 'src/app/components/logout-dialog/logout-d
 export class ProfileComponent implements OnInit {
   // Data
   player: Player;
-  playerTeam: Team;
-  teamMembers: Player[] = [];
   hasTeam: boolean = false;
+  playerTeam: Team;
+  teamPreferences: TeamPreferences;
+  teamMembers: Player[] = [];
 
   // Edit
   genders: Gender[] = [
@@ -38,7 +41,12 @@ export class ProfileComponent implements OnInit {
     { name: 'Feminine', value: 'FEM' },
     { name: 'Other', value: 'OTHER' },
   ];
+  userTypes = [
+    { name: 'Players', value: 'PLAYER' },
+    { name: 'Teams', value: 'TEAM' },
+  ];
   maxDate: Date = new Date();
+  games: Game[] = [];
 
   // Forms
   accountForm: FormGroup = this.builder.group({});
@@ -53,11 +61,11 @@ export class ProfileComponent implements OnInit {
   constructor(
     private playerService: PlayerService,
     private teamService: TeamService,
+    private gameService: GameService,
     private dialog: MatDialog,
     private tokenService: TokenService,
     private builder: FormBuilder,
-    private snackBar: MatSnackBar,
-    private authService: AuthService
+    private snackBar: MatSnackBar
   ) {
     // Setting max date.
     const currentDate = new Date();
@@ -82,6 +90,15 @@ export class ProfileComponent implements OnInit {
       .getPlayerByNickname(loggedNickname)
       .subscribe((player) => {
         this.player = player;
+        console.log(player);
+
+        this.gameService.getGames().subscribe((games) => {
+          this.games = games;
+          console.log(games);
+
+          // Create the form
+          this.createPreferencesForm();
+        });
 
         // Create the forms
         this.createAccountForm();
@@ -91,6 +108,13 @@ export class ProfileComponent implements OnInit {
           this.hasTeam = true;
           this.teamService.getTeamById(player.team!).subscribe((team) => {
             this.playerTeam = team;
+            // Get the team preferences
+            this.teamService
+              .getTeamPreferencesById(team.id!)
+              .subscribe((preferences) => {
+                this.teamPreferences = preferences;
+              });
+            // Get the members
             this.playerTeam.members.forEach((id) => {
               this.playerService.getPlayerById(id).subscribe((member) => {
                 this.teamMembers.push(member);
@@ -105,6 +129,7 @@ export class ProfileComponent implements OnInit {
   }
 
   private modifyPlayer(modifiedPlayer: Player, logout: boolean) {
+    console.log(modifiedPlayer);
     this.playerService.modifyPlayer(this.player.id!, modifiedPlayer).subscribe(
       (newPlayer) => {
         console.log(newPlayer);
@@ -141,6 +166,8 @@ export class ProfileComponent implements OnInit {
       });
     });
   }
+
+  createNewTeam() {}
 
   editAccountInformation(): void {
     // Check if there are any changes
@@ -203,7 +230,35 @@ export class ProfileComponent implements OnInit {
     this.modifyPlayer(modifiedPlayer, false);
   }
 
-  editGamePreferences(): void {}
+  editGamePreferences(): void {
+    // Check if there are any changes
+    if (
+      this.player.preferences.game === this.game?.value &&
+      this.player.preferences.role === this.role?.value &&
+      this.player.preferences.rank === this.rank?.value &&
+      this.player.preferences.feminine === this.feminine?.value &&
+      this.player.preferences.wantedUser === this.wantedUser?.value
+    ) {
+      this.snackBar.open("You haven't changed anything", 'Dismiss', {
+        duration: 2000,
+      });
+      return;
+    }
+
+    // We create a clone of the player
+    const modifiedPlayer = { ...this.player };
+
+    modifiedPlayer.preferences.game = this.game?.value;
+    modifiedPlayer.preferences.role = this.role?.value;
+    modifiedPlayer.preferences.rank = this.rank?.value;
+    modifiedPlayer.preferences.feminine = this.feminine?.value;
+    modifiedPlayer.preferences.wantedUser = this.wantedUser?.value;
+
+    // TODO: Cuando envio la contraseña cifrada, me da error de longitud
+    modifiedPlayer.password = 'password123';
+
+    this.modifyPlayer(modifiedPlayer, false);
+  }
 
   get nickname() {
     return this.accountForm.get('nickname');
@@ -223,6 +278,68 @@ export class ProfileComponent implements OnInit {
 
   get gender() {
     return this.basicInfoForm.get('gender');
+  }
+
+  get game() {
+    return this.preferencesForm.get('game');
+  }
+
+  get role() {
+    return this.preferencesForm.get('role');
+  }
+
+  get roles() {
+    let gameIndex = 0;
+
+    this.games.forEach((game, index) => {
+      if (game.name == this.game?.value) {
+        gameIndex = index;
+      }
+    });
+
+    // Si tiene equipo
+    if (this.hasTeam) {
+      const allRoles = this.games[gameIndex].roles;
+      const takenRoles = this.teamPreferences.takenRoles;
+      // Obtenemos los roles disponibles
+      const availableRoles = allRoles.filter(
+        (role) => takenRoles.indexOf(role.name) < 0
+      );
+
+      // Y añadimos el propio del jugador
+      const playerRole = allRoles.find(
+        (r) => r.name === this.player.preferences.role
+      );
+      availableRoles.push(playerRole!);
+      return availableRoles;
+    }
+
+    // Si no, devolvemos todos
+    return this.games[gameIndex].roles;
+  }
+
+  get rank() {
+    return this.preferencesForm.get('rank');
+  }
+
+  get ranks() {
+    let gameIndex = 0;
+
+    this.games.forEach((game, index) => {
+      if (game.name == this.game?.value) {
+        gameIndex = index;
+      }
+    });
+
+    return this.games[gameIndex].ranks;
+  }
+
+  get feminine() {
+    return this.preferencesForm.get('feminine');
+  }
+
+  get wantedUser() {
+    return this.preferencesForm.get('wantedUser');
   }
 
   private createAccountForm() {
@@ -258,6 +375,28 @@ export class ProfileComponent implements OnInit {
       ],
       birthday: [this.player.birthday, [Validators.required]],
       gender: [this.player.gender, [Validators.required]],
+    });
+  }
+
+  private createPreferencesForm() {
+    this.preferencesForm = this.builder.group({
+      game: [
+        { value: this.player.preferences.game, disabled: this.hasTeam },
+        [Validators.required],
+      ],
+      role: [this.player.preferences.role, [Validators.required]],
+      rank: [this.player.preferences.rank, [Validators.required]],
+      feminine: [
+        {
+          value: this.player.preferences.feminine,
+          disabled: this.gender?.value === 'MASC',
+        },
+        [],
+      ],
+      wantedUser: [
+        { value: this.player.preferences.wantedUser, disabled: this.hasTeam },
+        [],
+      ],
     });
   }
 

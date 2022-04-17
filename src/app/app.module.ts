@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HammerModule } from '@angular/platform-browser';
+import { SwipeCardLibModule } from 'ng-swipe-card';
 
 // Material modules
 import { MatButtonModule } from '@angular/material/button';
@@ -24,6 +25,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 // Components
 import { AppComponent } from './app.component';
@@ -31,7 +33,6 @@ import { RoutingModule } from './routing.module';
 import { GamesComponent } from './components/games/games.component';
 import { ButtonComponent } from './components/button/button.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
-import { CardComponent } from './components/card/card.component';
 import { BasicFormComponent } from './components/basic-form/basic-form.component';
 import { AccountFormComponent } from './components/account-form/account-form.component';
 import { interceptorProvider } from './services/interceptor.service';
@@ -57,7 +58,6 @@ import { LogoutDialogComponent } from './components/logout-dialog/logout-dialog.
     LoginComponent,
     LoginFormComponent,
     RegisterComponent,
-    CardComponent,
     ProfileComponent,
     BasicFormComponent,
     AccountFormComponent,
@@ -69,6 +69,7 @@ import { LogoutDialogComponent } from './components/logout-dialog/logout-dialog.
     LogoutDialogComponent,
   ],
   imports: [
+    SwipeCardLibModule,
     BrowserModule,
     HttpClientModule,
     FormsModule,
@@ -92,6 +93,7 @@ import { LogoutDialogComponent } from './components/logout-dialog/logout-dialog.
     MatToolbarModule,
     MatDividerModule,
     MatSnackBarModule,
+    MatSlideToggleModule,
     HammerModule,
   ],
   providers: [interceptorProvider],

@@ -1,1 +1,121 @@
-<p>feed works!</p>
+<div *ngIf="dataLoaded | async">
+  <sw-card-wrapper #cardWrapper>
+    <div *ngIf="1 > currentIndex">
+      <h2>There are no more users available!</h2>
+    </div>
+    <div
+      class="card"
+      *ngFor="let card of cards; let index = index"
+      [class.visible]="card.visible"
+      [class.hidden]="!card.visible"
+      [width]="cardWidth"
+      swSwipeable
+      [orientation]="'x'"
+      (swiped)="swiped($event, index)"
+    >
+      <div class="card-wrapper" *ngIf="isPlayer(card.user)">
+        <div class="info">
+          <h1>{{ userAsPlayer(card.user).nickname }}</h1>
+          <h2>{{ userAsPlayer(card.user).fullname }}</h2>
+        </div>
+        <mat-list>
+          <mat-list-item
+            ><mat-icon mat-list-icon>sports_esports</mat-icon>
+            <div mat-line>
+              <h2 class="bolder no-margin">
+                {{ userAsPlayer(card.user).preferences.game }} Player
+              </h2>
+            </div>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+          <mat-list-item
+            ><mat-icon mat-list-icon>leaderboard</mat-icon>
+            <div mat-line>
+              <h2 class="bolder no-margin">
+                {{ userAsPlayer(card.user).preferences.rank }}
+              </h2>
+            </div>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+          <mat-list-item
+            ><mat-icon mat-list-icon>account_box</mat-icon>
+            <div mat-line>
+              <h2 class="bolder no-margin">
+                {{ userAsPlayer(card.user).preferences.role }}
+              </h2>
+            </div>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+        </mat-list>
+        <mat-card *ngIf="userAsPlayer(card.user).team != undefined">
+          <mat-card-title>{{ getTeam(card.user).name }}</mat-card-title>
+          <mat-card-subtitle>{{
+            getTeamPreferences(card.user).averageRank
+          }}</mat-card-subtitle>
+        </mat-card>
+        <mat-card *ngIf="userAsPlayer(card.user).team === undefined">
+          <mat-card-title>No team found!</mat-card-title>
+          <mat-card-subtitle>Still searching for a team</mat-card-subtitle>
+        </mat-card>
+        <div class="buttons">
+          <button
+            [disabled]="currentIndex === -1"
+            mat-fab
+            color="accent"
+            (click)="swipeLeft()"
+          >
+            <mat-icon>sentiment_very_dissatisfied</mat-icon>
+          </button>
+          <button
+            [disabled]="currentIndex === -1"
+            mat-fab
+            color="primary"
+            (click)="swipeRight()"
+          >
+            <mat-icon>mood</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="card-wrapper" *ngIf="!isPlayer(card.user)">
+        <div class="info">
+          <h1>{{ userAsTeam(card.user).name }}</h1>
+          <h2>Average Rank: {{ teamPreferences[index].averageRank }}</h2>
+        </div>
+        <mat-list>
+          <mat-list-item *ngFor="let player of teamMembers[index]"
+            ><mat-icon mat-list-icon>account_circle</mat-icon>
+            <div mat-line>
+              <h2 class="bolder no-margin">
+                {{ player.nickname }}
+              </h2>
+            </div>
+            <div mat-line>
+              <h2 class="no-margin">
+                {{ player.preferences.role }} - {{ player.preferences.rank }}
+              </h2>
+            </div>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+        </mat-list>
+        <div class="buttons">
+          <button
+            [disabled]="currentIndex === -1"
+            mat-fab
+            color="accent"
+            (click)="swipeLeft()"
+          >
+            <mat-icon>sentiment_very_dissatisfied</mat-icon>
+          </button>
+          <button
+            [disabled]="currentIndex === -1"
+            mat-fab
+            color="primary"
+            (click)="swipeRight()"
+          >
+            <mat-icon>mood</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </sw-card-wrapper>
+</div>

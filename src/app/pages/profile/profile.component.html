@@ -5,6 +5,7 @@
   </div>
 
   <div class="content">
+    <!--YOUR ACCOUNT PANEL-->
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>
@@ -58,6 +59,7 @@
       </mat-action-row>
     </mat-expansion-panel>
 
+    <!--BASIC INFORMATION PANEL-->
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>
@@ -114,8 +116,8 @@
 
     <!--TEAM CARD-->
     <mat-card *ngIf="hasTeam">
-      <mat-card-title>{{ player.preferences.game }} Team</mat-card-title>
-      <mat-card-subtitle>{{ playerTeam.id }}</mat-card-subtitle>
+      <mat-card-title>{{ playerTeam.name }}</mat-card-title>
+      <mat-card-subtitle>{{ player.preferences.game }} Team</mat-card-subtitle>
       <mat-card-content>
         <mat-list>
           <mat-list-item *ngFor="let member of teamMembers"
@@ -130,24 +132,78 @@
           </mat-list-item>
         </mat-list>
       </mat-card-content>
-      <mat-card-actions>
-        <button mat-button color="primary" (click)="editGamePreferences()">
-          <mat-icon>settings</mat-icon>
-          Edit
-        </button>
-      </mat-card-actions>
     </mat-card>
 
     <!--NO TEAM CARD-->
     <mat-card *ngIf="!hasTeam">
       <mat-card-title>You have no team</mat-card-title>
-      <mat-card-subtitle>Go search a team!</mat-card-subtitle>
+      <mat-card-subtitle>Go search a team or create one!</mat-card-subtitle>
       <mat-card-actions>
-        <button mat-button color="primary" (click)="editGamePreferences()">
-          <mat-icon>settings</mat-icon>
-          Edit
+        <button mat-button color="primary" (click)="createNewTeam()">
+          <mat-icon>group_add</mat-icon>
+          New team
         </button>
       </mat-card-actions>
     </mat-card>
+
+    <!--PREFERENCES FORM-->
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon>settings</mat-icon>
+        </mat-panel-title>
+        <mat-panel-description> Your preferences </mat-panel-description>
+      </mat-expansion-panel-header>
+      <ng-template matExpansionPanelContent>
+        <form [formGroup]="preferencesForm">
+          <div class="form">
+            <mat-form-field appearance="legacy">
+              <mat-label>Favourite game</mat-label>
+              <mat-select formControlName="game" required>
+                <mat-option *ngFor="let g of games" [value]="g.name">
+                  {{ g.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error> You must select a game </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="legacy">
+              <mat-label>Role</mat-label>
+              <mat-select formControlName="role" required>
+                <mat-option *ngFor="let r of roles" [value]="r.name">
+                  {{ r.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error> You must select a role </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="legacy">
+              <mat-label>Rank</mat-label>
+              <mat-select formControlName="rank" required>
+                <mat-option *ngFor="let r of ranks" [value]="r.name"
+                  >{{ r.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error> You must select a rank </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="legacy">
+              <mat-label>What do you want to see?</mat-label>
+              <mat-select formControlName="wantedUser">
+                <mat-option *ngFor="let type of userTypes" [value]="type.value"
+                  >{{ type.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-slide-toggle formControlName="feminine"
+              >Show only feminine users</mat-slide-toggle
+            >
+          </div>
+        </form>
+      </ng-template>
+      <mat-action-row>
+        <button mat-button color="primary" (click)="editGamePreferences()">
+          <mat-icon>edit</mat-icon>
+          Edit
+        </button>
+      </mat-action-row>
+    </mat-expansion-panel>
   </div>
 </div>

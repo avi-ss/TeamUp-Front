@@ -7,7 +7,8 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { MatSidenav } from '@angular/material/sidenav';
+import { Router } from '@angular/router';
+import { TokenService } from './services/token.service';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +25,11 @@ export class AppComponent {
   // Declaring the Promise, yes! Promise!
   dataLoaded: Promise<boolean>;
 
-  constructor(private observer: BreakpointObserver) {
+  constructor(
+    private observer: BreakpointObserver,
+    private tokenService: TokenService,
+    private router: Router
+  ) {
     if (window.innerWidth < 800) {
       this.width = 70;
       this.contentPaddingLeft = 0;
@@ -36,6 +41,10 @@ export class AppComponent {
       this.isOpen = true;
       this.isOver = false;
     }
+  }
+
+  logOut() {
+    this.tokenService.logOut();
   }
 
   ngAfterViewInit() {
@@ -54,16 +63,6 @@ export class AppComponent {
 
         this.width = 30;
         this.contentPaddingLeft = 32;
-      }
-    });
-  }
-
-  toggleSidenav(): void {
-    this.observer.observe(['(max-width: 800px)']).subscribe((res) => {
-      if (res.matches) {
-        this.isOpen = false;
-      } else {
-        return;
       }
     });
   }

@@ -3,4 +3,5 @@ export interface Preferences {
   rank: string;
   role: string;
   feminine: boolean;
+  wantedUser: string;
 }

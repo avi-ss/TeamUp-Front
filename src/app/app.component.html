@@ -1,14 +1,19 @@
 <div *ngIf="dataLoaded | async">
   <mat-toolbar class="toolbar mat-elevation-z6" color="primary">
-    <button
-      mat-icon-button
-      *ngIf="sidenav.mode === 'over'"
-      (click)="sidenav.toggle()"
-    >
-      <mat-icon *ngIf="!sidenav.opened">menu</mat-icon>
-      <mat-icon *ngIf="sidenav.opened">close</mat-icon>
+    <div>
+      <button
+        mat-icon-button
+        *ngIf="sidenav.mode === 'over'"
+        (click)="sidenav.toggle()"
+      >
+        <mat-icon *ngIf="!sidenav.opened">menu</mat-icon>
+        <mat-icon *ngIf="sidenav.opened">close</mat-icon>
+      </button>
+      Team Up
+    </div>
+    <button mat-icon-button (click)="logOut()">
+      <mat-icon>logout</mat-icon>
     </button>
-    Team Up
   </mat-toolbar>
 </div>
 
@@ -20,42 +25,22 @@
     class="mat-elevation-z6"
     [style.width.%]="[width]"
   >
-    <button
-      mat-button
-      class="menu-button"
-      (click)="toggleSidenav()"
-      [routerLink]="'/profile'"
-    >
+    <button mat-button class="menu-button" [routerLink]="'/profile'">
       <mat-icon>account_circle</mat-icon>
       <span>Profile</span>
     </button>
     <mat-divider></mat-divider>
-    <button
-      mat-button
-      class="menu-button"
-      (click)="toggleSidenav()"
-      [routerLink]="'/feed'"
-    >
+    <button mat-button class="menu-button" [routerLink]="'/feed'">
       <mat-icon>dashboard</mat-icon>
       <span>Dashboard</span>
     </button>
     <mat-divider></mat-divider>
-    <button
-      mat-button
-      class="menu-button"
-      (click)="toggleSidenav()"
-      [routerLink]="'/tournaments'"
-    >
+    <button mat-button class="menu-button" [routerLink]="'/tournaments'">
       <mat-icon>calendar_today</mat-icon>
       <span>Tournaments</span>
     </button>
     <mat-divider></mat-divider>
-    <button
-      mat-button
-      class="menu-button"
-      (click)="toggleSidenav()"
-      [routerLink]="'/messages'"
-    >
+    <button mat-button class="menu-button" [routerLink]="'/messages'">
       <mat-icon>question_answer</mat-icon>
       <span>Messages</span>
     </button>

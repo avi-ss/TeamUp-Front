@@ -45,6 +45,7 @@ export class RegisterComponent {
       rank: this.rank,
       role: this.role,
       feminine: false,
+      wantedUser: 'user',
     };
 
     const player: Player = {

@@ -1,0 +1,11 @@
+<div mat-dialog-content>
+  <h2>{{ data.primaryText }}</h2>
+  <p>{{ data.secondaryText }}</p>
+  <p>{{ data.tertiaryText }}</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button color="primary" (click)="onNoClick()">Close</button>
+  <button mat-raised-button color="warn" [mat-dialog-close]="true">
+    {{ data.buttonText }}
+  </button>
+</div>

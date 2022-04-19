@@ -11,6 +11,11 @@ export class UserService {
 
   constructor(private httpClient: HttpClient) {}
 
+  addLike(id: string, likedId: string): Observable<User> {
+    const url = `${this.apiUrl}/${id}/${likedId}`;
+    return this.httpClient.patch<User>(url, null);
+  }
+
   getMatchedUsers(id: string): Observable<User[]> {
     const url = `${this.apiUrl}/matched/${id}`;
     return this.httpClient.get<User[]>(url);

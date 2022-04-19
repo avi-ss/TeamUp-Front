@@ -26,4 +26,14 @@ export class TeamService {
     const url = `${this.apiUrl}/forPlayer/${id}`;
     return this.httpClient.get<Team[]>(url);
   }
+
+  deleteTeam(id: string) {
+    const url = `${this.apiUrl}/${id}`;
+    return this.httpClient.delete(url);
+  }
+
+  deleteTeamMember(id: string, member: string) {
+    const url = `${this.apiUrl}/${id}/${member}`;
+    return this.httpClient.delete(url);
+  }
 }

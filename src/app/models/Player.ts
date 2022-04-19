@@ -5,7 +5,7 @@ export interface Player {
   team?: string;
   nickname: string;
   email: string;
-  password: string;
+  password?: string;
   fullname: string;
   birthday: string;
   gender: string;

@@ -107,7 +107,12 @@
         </form>
       </ng-template>
       <mat-action-row>
-        <button mat-button color="primary" (click)="editBasicInformation()">
+        <button
+          mat-button
+          color="primary"
+          [disabled]="basicInfoForm.invalid"
+          (click)="editBasicInformation()"
+        >
           <mat-icon>edit</mat-icon>
           Edit
         </button>
@@ -119,8 +124,10 @@
       <mat-card-title>{{ playerTeam.name }}</mat-card-title>
       <mat-card-subtitle>{{ player.preferences.game }} Team</mat-card-subtitle>
       <mat-card-content>
-        <mat-list>
-          <mat-list-item *ngFor="let member of teamMembers"
+        <mat-selection-list #members [multiple]="false">
+          <mat-list-option
+            *ngFor="let member of teamMembers"
+            (click)="onMemberChange(member)"
             ><mat-icon mat-list-icon>account_circle</mat-icon>
             <div mat-line>
               <b>{{ member.nickname }}</b>
@@ -129,9 +136,31 @@
               Role: {{ member.preferences.role }} - Rank:
               {{ member.preferences.rank }}
             </div>
-          </mat-list-item>
-        </mat-list>
+          </mat-list-option>
+        </mat-selection-list>
       </mat-card-content>
+      <mat-card-actions>
+        <button
+          *ngIf="isFounder"
+          mat-button
+          color="warn"
+          (click)="deleteTeam()"
+        >
+          <mat-icon>delete</mat-icon>
+          Delete team
+        </button>
+        <button
+          *ngIf="
+            isFounder && selectedMember !== undefined && !isSelectedFounder
+          "
+          mat-button
+          color="warn"
+          (click)="deleteSelectedMember()"
+        >
+          <mat-icon>no_accounts</mat-icon>
+          Delete member
+        </button>
+      </mat-card-actions>
     </mat-card>
 
     <!--NO TEAM CARD-->
@@ -199,7 +228,12 @@
         </form>
       </ng-template>
       <mat-action-row>
-        <button mat-button color="primary" (click)="editGamePreferences()">
+        <button
+          mat-button
+          color="primary"
+          [disabled]="preferencesForm.invalid"
+          (click)="editGamePreferences()"
+        >
           <mat-icon>edit</mat-icon>
           Edit
         </button>

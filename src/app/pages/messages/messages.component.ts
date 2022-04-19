@@ -78,7 +78,7 @@ export class MessagesComponent implements OnInit {
         'Conexión activa: ' + this.client.connected + ', ' + frameElement
       );
 
-      const url: string = '/user/' + this.currentUser.id + '/user/queue';
+      const url: string = '/user/queue-user' + this.currentUser.id;
       console.log(url);
 
       this.client.subscribe(url, this.onMessageRecieved);
@@ -143,6 +143,7 @@ export class MessagesComponent implements OnInit {
       // Añadimos el mensaje a la lista de mensajes
       this.messages.push(message);
       // Resetear el mensaje del formulario.
+      this.messageText = '';
     }
   };
 
@@ -179,6 +180,7 @@ export class MessagesComponent implements OnInit {
       });
   }
 
+  // It doesnt work
   scrollToBottom(): void {
     try {
       this.myScrollContainer.nativeElement.scrollTop =

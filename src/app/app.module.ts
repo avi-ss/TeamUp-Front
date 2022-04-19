@@ -36,6 +36,7 @@ import { LoginFormComponent } from './components/login-form/login-form.component
 import { BasicFormComponent } from './components/basic-form/basic-form.component';
 import { AccountFormComponent } from './components/account-form/account-form.component';
 import { interceptorProvider } from './services/interceptor.service';
+import { SimpleDialogComponent } from './components/simple-dialog/simple-dialog.component';
 
 // Pages
 import { SplashComponent } from './pages/splash/splash.component';
@@ -43,11 +44,9 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { PreferencesFormComponent } from './components/preferences-form/preferences-form.component';
-import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
 import { FeedComponent } from './pages/feed/feed.component';
 import { TournamentsComponent } from './pages/tournaments/tournaments.component';
 import { MessagesComponent } from './pages/messages/messages.component';
-import { LogoutDialogComponent } from './components/logout-dialog/logout-dialog.component';
 
 @NgModule({
   declarations: [
@@ -62,11 +61,10 @@ import { LogoutDialogComponent } from './components/logout-dialog/logout-dialog.
     BasicFormComponent,
     AccountFormComponent,
     PreferencesFormComponent,
-    DeleteDialogComponent,
     FeedComponent,
     TournamentsComponent,
     MessagesComponent,
-    LogoutDialogComponent,
+    SimpleDialogComponent,
   ],
   imports: [
     SwipeCardLibModule,

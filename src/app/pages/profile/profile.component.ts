@@ -4,7 +4,6 @@ import { TeamService } from 'src/app/services/team.service';
 import { Player } from 'src/app/models/Player';
 import { Team } from 'src/app/models/Team';
 import { MatDialog } from '@angular/material/dialog';
-import { DeleteDialogComponent } from 'src/app/components/delete-dialog/delete-dialog.component';
 import { TokenService } from 'src/app/services/token.service';
 import { Gender } from 'src/app/models/Gender';
 import {
@@ -17,10 +16,11 @@ import {
 } from '@angular/forms';
 import { map, Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { LogoutDialogComponent } from 'src/app/components/logout-dialog/logout-dialog.component';
 import { Game } from 'src/app/models/Game';
 import { GameService } from 'src/app/services/game.service';
 import { TeamPreferences } from 'src/app/models/TeamPreferences';
+import { Router } from '@angular/router';
+import { SimpleDialogComponent } from 'src/app/components/simple-dialog/simple-dialog.component';
 
 @Component({
   selector: 'app-profile',
@@ -34,6 +34,7 @@ export class ProfileComponent implements OnInit {
   playerTeam: Team;
   teamPreferences: TeamPreferences;
   teamMembers: Player[] = [];
+  selectedMember: Player;
 
   // Edit
   genders: Gender[] = [
@@ -65,7 +66,8 @@ export class ProfileComponent implements OnInit {
     private dialog: MatDialog,
     private tokenService: TokenService,
     private builder: FormBuilder,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router: Router
   ) {
     // Setting max date.
     const currentDate = new Date();
@@ -108,6 +110,7 @@ export class ProfileComponent implements OnInit {
           this.hasTeam = true;
           this.teamService.getTeamById(player.team!).subscribe((team) => {
             this.playerTeam = team;
+            console.log(team);
             // Get the team preferences
             this.teamService
               .getTeamPreferencesById(team.id!)
@@ -137,6 +140,9 @@ export class ProfileComponent implements OnInit {
 
         if (logout) this.tokenService.logOut();
 
+        // Reloading the component
+        this.reloadComponent();
+
         this.snackBar.open('Your profile updated successfully', 'Dismiss', {
           duration: 2000,
         });
@@ -153,8 +159,24 @@ export class ProfileComponent implements OnInit {
     this.tokenService.logOut();
   }
 
+  reloadComponent(): void {
+    // Reloading the component
+    this.router
+      .navigateByUrl('/feed', { skipLocationChange: true })
+      .then(() => {
+        this.router.navigateByUrl('/profile');
+      });
+  }
+
   deletePlayer(): void {
-    const dialogRef = this.dialog.open(DeleteDialogComponent, {});
+    const dialogRef = this.dialog.open(SimpleDialogComponent, {
+      data: {
+        primaryText: "You're about to delete your account",
+        secondaryText: 'This action will be irreversible',
+        tertiaryText: 'Are you sure you want to delete your account?',
+        buttonText: 'Delete',
+      },
+    });
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log(result);
@@ -163,6 +185,54 @@ export class ProfileComponent implements OnInit {
 
       this.playerService.deletePlayer(this.player.id!).subscribe(() => {
         this.tokenService.logOut();
+      });
+    });
+  }
+
+  onMemberChange = (member: Player) => {
+    this.selectedMember = member;
+  };
+
+  deleteSelectedMember() {
+    const dialogRef = this.dialog.open(SimpleDialogComponent, {
+      data: {
+        primaryText: "You're about to delete this member",
+        secondaryText: 'This action will be irreversible',
+        tertiaryText: 'Are you sure you want to delete this member?',
+        buttonText: 'Delete',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
+
+      if (result == undefined) return;
+
+      this.teamService
+        .deleteTeamMember(this.playerTeam.id!, this.selectedMember.id!)
+        .subscribe(() => {
+          this.reloadComponent();
+        });
+    });
+  }
+
+  deleteTeam(): void {
+    const dialogRef = this.dialog.open(SimpleDialogComponent, {
+      data: {
+        primaryText: "You're about to delete the team",
+        secondaryText: 'This action will be irreversible',
+        tertiaryText: 'Are you sure you want to delete the team?',
+        buttonText: 'Delete',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
+
+      if (result == undefined) return;
+
+      this.teamService.deleteTeam(this.playerTeam.id!).subscribe(() => {
+        this.reloadComponent();
       });
     });
   }
@@ -190,11 +260,14 @@ export class ProfileComponent implements OnInit {
     modifiedPlayer.nickname = this.nickname?.value;
     modifiedPlayer.email = this.email?.value;
 
-    // TODO: Cuando envio la contraseña cifrada, me da error de longitud
-    modifiedPlayer.password = 'password123';
-
     if (logout) {
-      const dialogRef = this.dialog.open(LogoutDialogComponent, {});
+      const dialogRef = this.dialog.open(SimpleDialogComponent, {
+        data: {
+          primaryText: 'This action will log out your account',
+          secondaryText: 'Are you sure you want to proceed?',
+          buttonText: 'Logout',
+        },
+      });
 
       dialogRef.afterClosed().subscribe((result) => {
         if (result == undefined) return;
@@ -224,9 +297,6 @@ export class ProfileComponent implements OnInit {
     modifiedPlayer.birthday = this.birthday?.value;
     modifiedPlayer.gender = this.gender?.value;
 
-    // TODO: Cuando envio la contraseña cifrada, me da error de longitud
-    modifiedPlayer.password = 'password123';
-
     this.modifyPlayer(modifiedPlayer, false);
   }
 
@@ -254,10 +324,15 @@ export class ProfileComponent implements OnInit {
     modifiedPlayer.preferences.feminine = this.feminine?.value;
     modifiedPlayer.preferences.wantedUser = this.wantedUser?.value;
 
-    // TODO: Cuando envio la contraseña cifrada, me da error de longitud
-    modifiedPlayer.password = 'password123';
-
     this.modifyPlayer(modifiedPlayer, false);
+  }
+
+  get isFounder(): boolean {
+    return this.playerTeam.founder === this.player.id;
+  }
+
+  get isSelectedFounder(): boolean {
+    return this.playerTeam.founder === this.selectedMember.id;
   }
 
   get nickname() {

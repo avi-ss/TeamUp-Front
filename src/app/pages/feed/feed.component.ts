@@ -7,6 +7,7 @@ import { TeamPreferences } from 'src/app/models/TeamPreferences';
 import { PlayerService } from 'src/app/services/player.service';
 import { TeamService } from 'src/app/services/team.service';
 import { TokenService } from 'src/app/services/token.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-feed',
@@ -33,6 +34,7 @@ export class FeedComponent implements OnInit {
 
   constructor(
     private tokenService: TokenService,
+    private userService: UserService,
     private playerService: PlayerService,
     private teamService: TeamService,
     private observer: BreakpointObserver
@@ -82,8 +84,18 @@ export class FeedComponent implements OnInit {
 
   // Like button
   swipeRight() {
-    this.cards[this.currentIndex].visible = false;
-    this.currentIndex--;
+    // If its a team we get its id, otherwise we get player's id
+    // const id = this.hasTeam ? this.playerTeam.id : this.player.id;
+    const id = this.player.id;
+
+    // We give the like to the user
+    this.userService
+      .addLike(id!, this.cards[this.currentIndex].user.id!)
+      .subscribe((result) => {
+        // When we got the result (even its not necesary), we quit the card
+        this.cards[this.currentIndex].visible = false;
+        this.currentIndex--;
+      });
   }
 
   private loadData(loggedNickname: string) {

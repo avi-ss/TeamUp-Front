@@ -1,0 +1,25 @@
+<div mat-dialog-content>
+    <h2>Create a new team!</h2>
+    <p>How is your team named?</p>
+    <form [formGroup]="teamNameForm">
+    <mat-form-field appearance="legacy">
+        <mat-label>Name</mat-label>
+        <input
+          matInput
+          formControlName="name"
+          required
+          maxlength="16"
+        />
+        <mat-error *ngIf="getTeamNameErrorMessage()">
+          {{ teamNameErrorMessage }}
+        </mat-error>
+      </mat-form-field>
+    </form>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button color="primary" (click)="onNoClick()">Close</button>
+    <button mat-raised-button color="warn" [disabled]="teamNameForm.invalid" [mat-dialog-close]="teamName">
+      Create
+    </button>
+  </div>
+  

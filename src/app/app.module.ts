@@ -1,10 +1,9 @@
 // General purpose modules
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, HammerModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HammerModule } from '@angular/platform-browser';
 import { SwipeCardLibModule } from 'ng-swipe-card';
 
 // Material modules
@@ -46,6 +45,7 @@ import { PreferencesFormComponent } from './components/preferences-form/preferen
 import { FeedComponent } from './pages/feed/feed.component';
 import { TournamentsComponent } from './pages/tournaments/tournaments.component';
 import { MessagesComponent } from './pages/messages/messages.component';
+import { CreateTeamDialogComponent } from './components/create-team-dialog/create-team-dialog.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +63,7 @@ import { MessagesComponent } from './pages/messages/messages.component';
     TournamentsComponent,
     MessagesComponent,
     SimpleDialogComponent,
+    CreateTeamDialogComponent,
   ],
   imports: [
     SwipeCardLibModule,

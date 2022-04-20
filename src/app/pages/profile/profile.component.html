@@ -166,6 +166,7 @@
         </mat-selection-list>
       </mat-card-content>
       <mat-card-actions>
+        <!--Delete team ONLY FOUNDER-->
         <button
           *ngIf="isFounder"
           mat-button
@@ -175,6 +176,7 @@
           <mat-icon>delete</mat-icon>
           Delete team
         </button>
+        <!--Delete member ONLY FOUNDER-->
         <button
           *ngIf="
             isFounder && selectedMember !== undefined && !isSelectedFounder
@@ -185,6 +187,16 @@
         >
           <mat-icon>no_accounts</mat-icon>
           Delete member
+        </button>
+        <!--Leave the team ONLY MEMBERS-->
+        <button
+          *ngIf="!isFounder"
+          mat-button
+          color="warn"
+          (click)="leaveTeam()"
+        >
+          <mat-icon>delete</mat-icon>
+          Leave team
         </button>
       </mat-card-actions>
     </mat-card>

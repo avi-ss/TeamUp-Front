@@ -21,6 +21,7 @@ import { GameService } from 'src/app/services/game.service';
 import { TeamPreferences } from 'src/app/models/TeamPreferences';
 import { Router } from '@angular/router';
 import { SimpleDialogComponent } from 'src/app/components/simple-dialog/simple-dialog.component';
+import { CreateTeamDialogComponent } from 'src/app/components/create-team-dialog/create-team-dialog.component';
 
 @Component({
   selector: 'app-profile',
@@ -188,6 +189,29 @@ export class ProfileComponent implements OnInit {
       });
     });
   }
+  
+  leaveTeam() {
+    const dialogRef = this.dialog.open(SimpleDialogComponent, {
+      data: {
+        primaryText: "You're about to leave the team",
+        secondaryText: 'This action will be irreversible',
+        tertiaryText: 'Are you sure you want to leave the team?',
+        buttonText: 'Leave',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
+
+      if (result == undefined) return;
+
+      this.teamService
+        .deleteTeamMember(this.playerTeam.id!, this.player.id!)
+        .subscribe(() => {
+          this.reloadComponent();
+        });
+    });
+  }
 
   onMemberChange = (member: Player) => {
     this.selectedMember = member;
@@ -237,7 +261,28 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  createNewTeam() {}
+  createNewTeam() {
+    const dialogRef = this.dialog.open(CreateTeamDialogComponent);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
+
+      if (result == undefined) return;
+
+      // We create a new team with the name selected
+      const newTeam: Team = {
+        founder: this.player.id!,
+        members: [ this.player.id! ],
+        name: result
+      }
+
+      this.teamService
+        .createTeam(newTeam)
+        .subscribe(() => {
+          this.reloadComponent();
+        });
+    });
+  }
 
   editAccountInformation(): void {
     // Check if there are any changes

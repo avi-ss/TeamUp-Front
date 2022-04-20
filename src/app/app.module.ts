@@ -30,7 +30,6 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 // Components
 import { AppComponent } from './app.component';
 import { RoutingModule } from './routing.module';
-import { GamesComponent } from './components/games/games.component';
 import { ButtonComponent } from './components/button/button.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { BasicFormComponent } from './components/basic-form/basic-form.component';
@@ -51,7 +50,6 @@ import { MessagesComponent } from './pages/messages/messages.component';
 @NgModule({
   declarations: [
     AppComponent,
-    GamesComponent,
     SplashComponent,
     ButtonComponent,
     LoginComponent,

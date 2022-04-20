@@ -1,7 +1,23 @@
-<div *ngIf="dataLoaded | async">
+<div *ngIf="dataLoaded | async" class="container">
   <div class="header">
-    <h1>Profile of {{ player.nickname }}</h1>
-    <h3>{{ player.fullname }}</h3>
+    <div>
+      <img
+        *ngIf="player.gender === 'MASC'"
+        src="assets/images/male_avatar.svg"
+        class="avatar"
+        alt=""
+      />
+      <img
+        *ngIf="player.gender !== 'MASC'"
+        src="assets/images/female_avatar.svg"
+        class="avatar"
+        alt=""
+      />
+    </div>
+    <div>
+      <h1 class="header-nickname">Profile of {{ player.nickname }}</h1>
+      <h3 class="header-fullname">{{ player.fullname }}</h3>
+    </div>
   </div>
 
   <div class="content">
@@ -14,6 +30,9 @@
         <mat-panel-description> Your account </mat-panel-description>
       </mat-expansion-panel-header>
       <ng-template matExpansionPanelContent>
+        <div class="form-image-container">
+          <img src="assets/images/account_form.svg" class="form-image" alt="" />
+        </div>
         <form [formGroup]="accountForm">
           <div class="form">
             <mat-form-field appearance="legacy">
@@ -70,6 +89,13 @@
         </mat-panel-description>
       </mat-expansion-panel-header>
       <ng-template matExpansionPanelContent>
+        <div class="form-image-container">
+          <img
+            src="assets/images/personal_form.svg"
+            class="form-image"
+            alt=""
+          />
+        </div>
         <form [formGroup]="basicInfoForm">
           <div class="form">
             <mat-form-field appearance="legacy">
@@ -184,6 +210,13 @@
         <mat-panel-description> Your preferences </mat-panel-description>
       </mat-expansion-panel-header>
       <ng-template matExpansionPanelContent>
+        <div class="form-image-container">
+          <img
+            src="assets/images/preferences_form.svg"
+            class="form-image"
+            alt=""
+          />
+        </div>
         <form [formGroup]="preferencesForm">
           <div class="form">
             <mat-form-field appearance="legacy">

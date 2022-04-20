@@ -43,6 +43,10 @@ export class AppComponent {
     }
   }
 
+  get isLogged(): boolean {
+    return this.tokenService.isLogged();
+  }
+
   logOut() {
     this.tokenService.logOut();
   }

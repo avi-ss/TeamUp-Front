@@ -1,12 +1,20 @@
-<div class="container">
-  <h1>Login screen</h1>
+<div class="content">
+  <div class="header">
+    <h1>Welcome back!</h1>
+  </div>
+  <img src="assets/images/login_screen.svg" class="image-svg" alt="" />
   <form [formGroup]="loginForm">
     <app-login-form formControlName="login"></app-login-form>
-    <app-button
-      [disabled]="loginForm.invalid"
-      text="Login"
-      (btnClick)="onLogin()"
-    ></app-button>
   </form>
-  <span>Don't have an account? <a routerLink="/register">Sign up</a></span>
+  <div class="login-button">
+    <button
+      [disabled]="loginForm.invalid"
+      mat-raised-button
+      color="primary"
+      (click)="onLogin()"
+    >
+      Login
+    </button>
+    <span>Don't have an account? <a routerLink="/register">Sign up</a></span>
+  </div>
 </div>

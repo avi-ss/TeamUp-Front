@@ -11,7 +11,7 @@
       </button>
       Team Up
     </div>
-    <button mat-icon-button (click)="logOut()">
+    <button mat-icon-button *ngIf="isLogged" (click)="logOut()">
       <mat-icon>logout</mat-icon>
     </button>
   </mat-toolbar>

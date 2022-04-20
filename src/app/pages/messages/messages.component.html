@@ -1,5 +1,5 @@
 <mat-toolbar class="mat-elevation-z6">
-  <button mat-icon-button *ngIf="isOver" (click)="messagesSidenav.toggle()">
+  <button mat-icon-button *ngIf="isOver && contacts.length !== 0" (click)="messagesSidenav.toggle()">
     <mat-icon *ngIf="!isOpen">menu</mat-icon>
     <mat-icon *ngIf="isOpen">close</mat-icon>
   </button>
@@ -28,6 +28,12 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
+    <div *ngIf="contacts.length === 0" class="empty-container">
+      <img src="assets/images/messages_empty_screen.svg" class="empty-image" alt="" />
+      <h2>
+        It seems like your messages are empty!
+      </h2>
+    </div>
     <div *ngIf="isContactActive" class="chat-container">
       <mat-list #scrollMe>
         <mat-list-item *ngFor="let msg of messages"

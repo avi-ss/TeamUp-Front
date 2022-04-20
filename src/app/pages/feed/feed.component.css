@@ -14,6 +14,20 @@ sw-card-wrapper {
   display: none;
 }
 
+.empty-container {
+  display: flex;
+  height: calc(100vh - 200px);
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 40px;
+}
+
+.empty-container > h2 {
+  text-align: center;
+}
+
 .empty-image {
   width: 70%;
   max-width: 400px;

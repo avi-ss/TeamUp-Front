@@ -1,0 +1,58 @@
+.content {
+  height: calc(100vh - 55px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  overflow: scroll;
+}
+
+.mat-stepper-vertical {
+  margin-top: 2%;
+  width: 100%;
+  max-width: 500px;
+  background-color: transparent;
+}
+
+.step-title {
+  margin-bottom: 30px;
+}
+
+h1 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.header {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 100;
+}
+
+.button-wrapper {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  gap: 1.5vh;
+}
+
+.mat-raised-button {
+  border-radius: 30px;
+  width: 35vw;
+  max-width: 200px;
+  line-height: 2.25rem;
+  font-size: 1.125rem;
+}
+
+.alternative-link {
+  font-weight: 300;
+  margin: 25px;
+}
+
+.button-link {
+  padding: 0;
+  font-size: 1rem;
+}

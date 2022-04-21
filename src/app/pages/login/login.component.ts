@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { PlayerLogin } from 'src/app/models/PlayerLogin';
 import { AuthService } from 'src/app/services/auth.service';
@@ -18,7 +19,8 @@ export class LoginComponent implements OnInit {
     private tokenService: TokenService,
     private authService: AuthService,
     private router: Router,
-    private builder: FormBuilder
+    private builder: FormBuilder,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {}
@@ -31,13 +33,22 @@ export class LoginComponent implements OnInit {
       (data) => {
         // En este punto nos hemos logueado correctamente
         this.tokenService.setToken(data.token);
-        console.log('Logueado correctamente');
         this.router.navigateByUrl('/profile');
       },
       (error) => {
         // Ha habido un problema durante el login
         // TODO: Sacar un dialog por pantalla mostrando el error
-        console.log(error);
+        this.snackBar.open('Incorrect credentials', 'Dismiss', {
+          duration: 2000,
+        });
+
+        // Reset the form
+        this.loginForm.patchValue({
+          login: {
+            nickname: '',
+            password: '',
+          },
+        });
       }
     );
   }

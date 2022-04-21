@@ -2,7 +2,12 @@
   <div class="header">
     <h1>Welcome back!</h1>
   </div>
-  <img src="assets/images/login_screen.svg" class="image-svg" alt="" />
+  <img
+    loading="lazy"
+    src="assets/images/login_screen.svg"
+    class="image-svg"
+    alt=""
+  />
   <form [formGroup]="loginForm">
     <app-login-form formControlName="login"></app-login-form>
   </form>
@@ -15,6 +20,11 @@
     >
       Login
     </button>
-    <span>Don't have an account? <a routerLink="/register">Sign up</a></span>
+    <h3 class="alternative-link">
+      Don't have an account?
+      <a class="button-link" mat-button color="accent" routerLink="/register"
+        ><b>Sign up</b></a
+      >
+    </h3>
   </div>
 </div>

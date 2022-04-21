@@ -1,0 +1,12 @@
+.register-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1vh;
+}
+
+mat-form-field {
+  width: 70vw;
+  max-width: 400px;
+}

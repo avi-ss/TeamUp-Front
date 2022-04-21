@@ -1,20 +1,20 @@
-<form [formGroup]="form">
+<form [formGroup]="form" class="register-form">
   <div>
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="legacy">
       <mat-label>Enter your full name</mat-label>
       <input
         matInput
-        placeholder="Full name"
+        placeholder="Tom Cruise"
         formControlName="fullname"
         required
       />
-      <mat-error *ngIf="fullname?.invalid">
-        Name must contain only letters and minimum of 8 letters
+      <mat-error *ngIf="getFullnameErrorMessage()">
+        {{ fullnameErrorMessage }}
       </mat-error>
     </mat-form-field>
   </div>
   <div>
-    <mat-form-field class="example-full-width" appearance="fill">
+    <mat-form-field class="example-full-width" appearance="legacy">
       <mat-label>Select your birthday</mat-label>
       <input
         matInput
@@ -28,7 +28,7 @@
     </mat-form-field>
   </div>
   <div>
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="legacy">
       <mat-label>Gender</mat-label>
       <mat-select formControlName="gender" required>
         <mat-option>--</mat-option>

@@ -20,7 +20,7 @@
 
 .image-svg {
   width: 75%;
-  max-width: 500px;
+  max-width: 400px;
   transform: translateX(-4%);
 }
 
@@ -35,7 +35,16 @@
 .mat-raised-button {
   border-radius: 30px;
   width: 50vw;
-  max-width: 300px;
+  max-width: 250px;
   line-height: 2.75rem;
   font-size: 1.125rem;
+}
+
+.alternative-link {
+  font-weight: 300;
+}
+
+.button-link {
+  padding: 0;
+  font-size: 1rem;
 }

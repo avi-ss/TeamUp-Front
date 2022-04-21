@@ -1,15 +1,19 @@
-<div class="container">
+<div class="content">
   <mat-stepper orientation="vertical" linear #stepper>
     <!--STEP 0 : ACCOUNT-->
     <form [formGroup]="registerForm[0]">
       <mat-step [stepControl]="registerForm[0]">
         <ng-template matStepLabel>Fill your account information</ng-template>
-        <h1>Welcome Onboard, Gamer!</h1>
-        <p>Let's help you find your perfect team</p>
+        <div class="step-title">
+          <h1>Welcome Onboard, Gamer!</h1>
+          <h3 class="header">Let's help you find your perfect team</h3>
+        </div>
         <app-account-form formControlName="account"></app-account-form>
-        <button mat-raised-button color="primary" matStepperNext>
-          Register
-        </button>
+        <div class="button-wrapper">
+          <button mat-raised-button color="primary" matStepperNext>
+            Register
+          </button>
+        </div>
       </mat-step>
     </form>
 
@@ -19,9 +23,13 @@
         <ng-template matStepLabel
           >Fill out your personal information</ng-template
         >
-        <h1>Tell us more about you</h1>
+        <div class="step-title">
+          <h1>Tell us more about you</h1>
+          <h3 class="header">Find peers like you!</h3>
+        </div>
+
         <app-basic-form formControlName="basic"></app-basic-form>
-        <div>
+        <div class="button-wrapper">
           <button mat-raised-button color="primary" matStepperPrevious>
             Back
           </button>
@@ -36,22 +44,34 @@
     <form [formGroup]="registerForm[2]">
       <mat-step [stepControl]="registerForm[2]">
         <ng-template matStepLabel>Fill out your game preferences</ng-template>
-        <h1>Select your favourite game</h1>
+        <div class="step-title">
+          <h1>Select your favourite game</h1>
+          <h3 class="header">And your rank and role!</h3>
+        </div>
+
         <app-preferences-form
           formControlName="preferences"
         ></app-preferences-form>
-        <div>
+        <div class="button-wrapper">
           <button mat-raised-button color="primary" matStepperPrevious>
             Back
           </button>
-          <app-button
+          <button
+            mat-raised-button
             [disabled]="registerForm[2].invalid"
-            text="Complete"
-            (btnClick)="onRegister()"
-          ></app-button>
+            color="primary"
+            (click)="onRegister()"
+          >
+            Complete
+          </button>
         </div>
       </mat-step>
     </form>
   </mat-stepper>
-  <span>Already have an account? <a routerLink="/login">Sign in</a></span>
+  <h3 class="alternative-link">
+    Already have an account?
+    <a class="button-link" mat-button color="accent" routerLink="/login">
+      <b>Sign in</b>
+    </a>
+  </h3>
 </div>

@@ -2,6 +2,7 @@
   <div class="header">
     <div>
       <img
+        loading="lazy"
         *ngIf="player.gender === 'MASC'"
         src="assets/images/male_avatar.svg"
         class="avatar"
@@ -31,7 +32,12 @@
       </mat-expansion-panel-header>
       <ng-template matExpansionPanelContent>
         <div class="form-image-container">
-          <img src="assets/images/account_form.svg" class="form-image" alt="" />
+          <img
+            loading="lazy"
+            src="assets/images/account_form.svg"
+            class="form-image"
+            alt=""
+          />
         </div>
         <form [formGroup]="accountForm">
           <div class="form">
@@ -91,6 +97,7 @@
       <ng-template matExpansionPanelContent>
         <div class="form-image-container">
           <img
+            loading="lazy"
             src="assets/images/personal_form.svg"
             class="form-image"
             alt=""
@@ -224,6 +231,7 @@
       <ng-template matExpansionPanelContent>
         <div class="form-image-container">
           <img
+            loading="lazy"
             src="assets/images/preferences_form.svg"
             class="form-image"
             alt=""

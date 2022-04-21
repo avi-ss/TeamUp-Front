@@ -5,6 +5,7 @@ import { Preferences } from 'src/app/models/Preferences';
 import { PlayerService } from 'src/app/services/player.service';
 import { Router } from '@angular/router';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-register',
@@ -20,7 +21,8 @@ export class RegisterComponent {
   constructor(
     private playerService: PlayerService,
     private builder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {
     this.registerForm.push(
       this.builder.group({
@@ -45,7 +47,7 @@ export class RegisterComponent {
       rank: this.rank,
       role: this.role,
       feminine: false,
-      wantedUser: 'user',
+      wantedUser: 'player',
     };
 
     const player: Player = {
@@ -63,10 +65,16 @@ export class RegisterComponent {
     this.playerService.addPlayer(player).subscribe(
       (result) => {
         console.log(result);
+        this.snackBar.open('Register successful!', 'Dismiss', {
+          duration: 2000,
+        });
         this.router.navigateByUrl('/login');
       },
       (error) => {
         console.log('ERROR: ' + error);
+        this.snackBar.open('Something went wrong...', 'Dismiss', {
+          duration: 2000,
+        });
       }
     );
   }

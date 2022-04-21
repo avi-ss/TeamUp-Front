@@ -1,12 +1,5 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
-import {
-  AfterViewChecked,
-  Component,
-  ContentChild,
-  ElementRef,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { TokenService } from './services/token.service';
 

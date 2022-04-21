@@ -42,6 +42,8 @@ export class BasicFormComponent
   ];
   maxDate: Date = new Date();
 
+  fullnameErrorMessage: string = '';
+
   get value(): BasicInfoData {
     return this.form.value;
   }
@@ -92,6 +94,26 @@ export class BasicFormComponent
         this.onTouched();
       })
     );
+  }
+
+  getFullnameErrorMessage() {
+    if (this.form != null) {
+      if (this.fullname?.hasError('required')) {
+        this.fullnameErrorMessage = 'You must enter a name';
+        return true;
+      } else if (this.fullname?.hasError('minlength')) {
+        this.fullnameErrorMessage = 'Minimum of 8 characters';
+        return true;
+      } else if (this.fullname?.hasError('maxlenght')) {
+        this.fullnameErrorMessage = 'Maximum of 25 characters';
+        return true;
+      } else if (this.fullname?.hasError('pattern')) {
+        this.fullnameErrorMessage = 'Max. 2 names starting with capital letter';
+        return true;
+      }
+    }
+    this.fullnameErrorMessage = '';
+    return false;
   }
 
   onChange: any = () => {};
